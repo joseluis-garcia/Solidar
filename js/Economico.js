@@ -1,0 +1,206 @@
+import TCB from "./TCB.js";
+import * as UTIL from "./Utiles.js";
+
+export default class Economico {
+  constructor() {
+    // Inicializa la tabla indice de acceso
+    this.idxTable = Array(365);
+    for (let i = 0; i < 365; i++) {
+      let tmp = UTIL.fechaDesdeIndice(i);
+      this.idxTable[i] = {
+        dia: tmp[0],
+        mes: tmp[1],
+        consumoOriginal: 0,
+        consumoConPlacas: 0,
+        compensado: 0,
+        ahorradoAutoconsumo: 0,
+        diaSemana: 0,
+      }; //Esta array contiene lo pagado por consumo, lo cobrado por compensacion y el balance neto sin tener en cuenta posibles limites
+    }
+    this.cashFlow = Array(5);
+    for (let i = 0; i < 5; i++) {
+      this.cashFlow[i] = {
+        ano: 0,
+        previo: 0,
+        inversion: 0,
+        ahorro: 0,
+        IBI: 0,
+        subvencion: 0,
+        pendiente: 0,
+      };
+    }
+
+    this.diaHoraPrecioOriginal = Array.from(Array(365), () => new Array(24).fill(0));
+    this.diaHoraPrecioConPaneles = Array.from(Array(365), () => new Array(24).fill(0));
+    this.diaHoraTarifaOriginal = Array.from(Array(365), () => new Array(24).fill(0));
+    this.diaHoraTarifaConPaneles = Array.from(Array(365), () => new Array(24).fill(0));
+
+    this.impuestoTotal = (TCB.parametros.IVA + TCB.parametros.impuestoElectrico) / 100;
+
+    this.consumoOriginalMensual = new Array(12);  
+    this.consumoConPlacasMensual = new Array(12);
+    this.consumoConPlacasMensualCorregido = new Array(12);
+    this.compensadoMensual = new Array(12);
+    this.compensadoMensualCorregido = new Array(12);
+
+    this.ahorradoAutoconsumoMes = new Array(12);
+    this.perdidaMes = new Array(12);
+    this.ahorroAnual = 0;
+    this.TIRProyecto = 0;
+    this.VANProyecto = 0;
+    this.interesVAN = TCB.parametros.interesVAN;
+    this.reCalculo();
+  }
+
+  reCalculo() {
+    //Completamos las tabla de tarifas
+    for (let dia=0; dia < 365; dia++) {
+      this.idxTable[dia].consumoOriginal = 0;
+      this.idxTable[dia].consumoConPlacas = 0;
+      this.idxTable[dia].ahorradoAutoconsumo = 0;
+      this.idxTable[dia].compensado = 0;
+
+          //El dia de calculo a efectos de tarifa es el dia / mes del año del último registro del fichero de consumos
+      let diaCalculo = new Date(TCB.consumo.fechaFin.getYear(),this.idxTable[dia].mes,this.idxTable[dia].dia);
+      let diaSemana = diaCalculo.getDay();
+      this.idxTable[dia].diaSemana = diaSemana;
+      let tarifa = TCB.tarifas[TCB.tarifaActiva];
+      for (let hora = 0; hora < 24; hora++) {
+        if (TCB.tarifaActiva == "2.0TD") {
+          if (diaSemana == 0 || diaSemana == 6) {             //es un fin de semana por lo que tarifa P3 todo el dia
+            this.diaHoraTarifaOriginal[dia][hora] = tarifa.precios[3];
+          } else {
+            this.diaHoraTarifaOriginal[dia][hora] = tarifa.precios[tarifa.horas[hora]];              
+          }
+        } else {
+          if (diaSemana == 0 || diaSemana == 6) {
+            this.diaHoraTarifaOriginal[dia][hora] = tarifa.precios[6]; //es un fin de semana por lo que tarifa P6 todo el dia
+          } else {
+            this.diaHoraTarifaOriginal[dia][hora] = tarifa.precios[[tarifa.horas[this.idxTable[dia].mes][hora]]];
+          }
+        }
+
+        this.diaHoraPrecioOriginal[dia][hora] = TCB.consumo.diaHora[dia][hora] * this.diaHoraTarifaOriginal[dia][hora] * (1 + this.impuestoTotal);
+        // Determinamos el precio de esa hora (la tarifa) segun sea el balance. Si es negativo compensa
+        if (TCB.balance.diaHora[dia][hora] < 0) {  
+          this.diaHoraTarifaConPaneles[dia][hora] = tarifa.precios[0];
+          this.idxTable[dia].ahorradoAutoconsumo += TCB.consumo.diaHora[dia][hora] * this.diaHoraTarifaOriginal[dia][hora] * (1 + this.impuestoTotal);
+          this.diaHoraPrecioConPaneles[dia][hora] += TCB.balance.diaHora[dia][hora] * this.diaHoraTarifaConPaneles[dia][hora] * (1 + this.impuestoTotal);
+          this.idxTable[dia].compensado += this.diaHoraPrecioConPaneles[dia][hora];
+        } else {
+          this.diaHoraTarifaConPaneles[dia][hora] = this.diaHoraTarifaOriginal[dia][hora];
+          this.diaHoraPrecioConPaneles[dia][hora] = TCB.balance.diaHora[dia][hora] * this.diaHoraTarifaConPaneles[dia][hora] * (1 + this.impuestoTotal);
+          this.idxTable[dia].ahorradoAutoconsumo += TCB.produccion.diaHora[dia][hora] * this.diaHoraTarifaOriginal[dia][hora] * (1 + this.impuestoTotal);
+        }
+
+        this.idxTable[dia].consumoOriginal += this.diaHoraPrecioOriginal[dia][hora];
+        this.idxTable[dia].consumoConPlacas += this.diaHoraPrecioConPaneles[dia][hora];
+      }
+    }
+
+    this.consumoOriginalMensual = UTIL.resumenMensual(this.idxTable, "consumoOriginal" );
+    this.consumoConPlacasMensual = UTIL.resumenMensual(this.idxTable, "consumoConPlacas" );
+    this.compensadoMensual = UTIL.resumenMensual(this.idxTable, "compensado");
+    this.ahorradoAutoconsumoMes = UTIL.resumenMensual(this.idxTable, "ahorradoAutoconsumo");
+
+    for (let i = 0; i < 12; i++) {
+      if (this.consumoConPlacasMensual[i] < 0) {
+        //Se debe corregir que si la comercializadora limita economicamente la compensacion al consumo
+        this.perdidaMes[i] = -this.consumoConPlacasMensual[i];
+        this.compensadoMensualCorregido[i] = this.compensadoMensual[i] + this.perdidaMes[i];
+        this.consumoConPlacasMensualCorregido[i] = 0;
+      } else {
+        this.perdidaMes[i] = 0;
+        this.compensadoMensualCorregido[i] = this.compensadoMensual[i];
+        this.consumoConPlacasMensualCorregido[i] = this.consumoConPlacasMensual[i];
+      }
+    }
+    this.calculoFinanciero();
+  }
+
+  calculoFinanciero() {
+    const tiempoSubvencionIBI = document.getElementById("duracionSubvencionIBI").value;
+    const valorSubvencionIBI = document.getElementById("valorIBI").value;
+    const porcientoSubvencionIBI = document.getElementById("porcientoSubvencionIBI").value / 100;
+    const tipoSubvencionEU = document.getElementById("subvencionEU").value;
+    var valorSubvencionEU;
+    var cuotaPeriodo = new Array(5).fill(0);
+
+    if ((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80) {
+      valorSubvencionEU = 0;
+    } else {
+      valorSubvencionEU = tipoSubvencionEU * TCB.instalacion.potenciaTotal();
+    }
+
+    this.ahorroAnual = UTIL.suma(this.consumoOriginalMensual) - UTIL.suma(this.consumoConPlacasMensualCorregido);
+    this.cashFlow[1].subvencion = valorSubvencionEU; //La subvención se cobra con suerte despues de un año
+    for (let i = 0; i < 5; i++) {
+      this.cashFlow[i].ano = i + 1;
+      this.cashFlow[i].ahorro = this.ahorroAnual;
+      if (i == 0) {
+        this.cashFlow[i].previo = 0;
+        this.cashFlow[i].inversion = -TCB.instalacion.precioInstalacion();
+        this.cashFlow[i].IBI = 0; //Los beneficios de IBI suelen ser a partir del año 1
+      } else {
+        this.cashFlow[i].previo = this.cashFlow[i - 1].pendiente;
+        if (i <= tiempoSubvencionIBI) {
+          this.cashFlow[i].IBI = valorSubvencionIBI * porcientoSubvencionIBI;
+        }
+      }
+      cuotaPeriodo[i] =
+        this.cashFlow[i].inversion +
+        this.cashFlow[i].ahorro +
+        this.cashFlow[i].IBI +
+        this.cashFlow[i].subvencion;
+        this.cashFlow[i].pendiente = this.cashFlow[i].previo + cuotaPeriodo[i];
+    }
+
+    this.VANProyecto = this.VAN(this.interesVAN, cuotaPeriodo);
+    this.TIRProyecto = this.TIR(this.interesVAN * 2, cuotaPeriodo);
+  }
+
+  // Calculo de TIR
+  TIR(initRate, args) {
+    var depth = 20;
+    var numberOfTries = 1;
+
+    var positive, negative;
+    args.forEach(function (value) {
+      if (value > 0) positive = true;
+      if (value < 0) negative = true;
+    });
+    if (!positive || !negative)
+      throw new Error("TIR necesita al menos un valor negativo");
+
+    let rate = initRate;
+    let delta = 1;
+    let flag = false;
+    while (numberOfTries < depth) {
+      let _van = this.VAN(rate, args);
+      if (_van < 0) {
+        delta = delta / 2;
+        flag = true;
+        rate = rate - delta;
+        if (rate < 0) {
+          alert("rate:" + rate);
+          numberOfTries = depth;
+        }
+      } else {
+        flag ? (delta /= 2) : (delta *= 2);
+        rate = rate + delta;
+      }
+      numberOfTries++;
+    }
+    return rate;
+  }
+
+  // Calculo de VAN
+  VAN(rate, units) {
+    var rate = rate / 100;
+    var _npv = units[0];
+    for (var i = 1; i < units.length; i++) {
+      _npv += units[i] / Math.pow(1 + rate, i);
+    }
+    return Math.round(_npv * 100) / 100;
+  }
+}
