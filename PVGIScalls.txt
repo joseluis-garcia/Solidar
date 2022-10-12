@@ -27,3 +27,5 @@
 2022/10/12 08:54:23;2022/10/12 08:54:31;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&lat=39.5478&lon=-4.3614&loss=14&optimalangles=1&pvtechchoice=crystSi
 2022/10/12 08:56:45;2022/10/12 08:57:04;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&lat=41.0758&lon=-4.2208&loss=14&optimalangles=1&pvtechchoice=crystSi
 2022/10/12 09:02:12;2022/10/12 09:02:24;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&lat=40.2222&lon=-3.8692&loss=14&optimalangles=1&pvtechchoice=crystSi
+2022/10/12 09:59:33;2022/10/12 09:59:40;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&lat=42.7903&lon=-3.1177&loss=14&optimalangles=1&pvtechchoice=crystSi
+2022/10/12 10:16:20;2022/10/12 10:16:30;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&lat=41.6677&lon=-2.7222&loss=14&optimalangles=1&pvtechchoice=crystSi

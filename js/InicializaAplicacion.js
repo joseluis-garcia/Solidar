@@ -75,12 +75,21 @@ async function inicializaEventos() {
     if (this.files.length == 1) {
       let reader = new FileReader();
       reader.onload = (e) => {
+        try {
           TCB.tarifas = JSON.parse(e.target.result);
           TCB.tarifaActiva = document.getElementById('tarifa').value;
           for (let i=0; i<=6; i++){
             document.getElementById("tarifaP"+i).value = TCB.tarifas[TCB.tarifaActiva].precios[i];
           }
+        } catch (err) {
+          alert(i18next.t("precios_MSG_errorLecturaFicheroTarifas") + "\nParser.error: " + err);
+        }
       }
+      reader.onerror = (err) => {
+        alert(i18next.t("precios_MSG_errorLecturaFicheroTarifas") + "\nReader.error: " + reader.error);
+        reject("...error de lectura");
+      }
+      
       reader.readAsText(this.files[0]);
     }
   });
