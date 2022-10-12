@@ -45,18 +45,8 @@ async function inicializaEventos() {
 
   // Se carga la pestaña inicial que es la de localización
   UTIL.muestraPestana('localizacion');
-
-
   
   // ---> Eventos del menu general de opciones y formularios asociados
-
-  // Inicialización y evento asociado a la generación del informe pdf
-  document.getElementById('informe').addEventListener("click", function handleChange(event) { 
-    if (TCB.economicoCreado) {
-      generaInformePDF();
-    } else {
-        alert("debe procesar primero");
-    }});
 
   // Los parametros estan definidos en el objeto TCB.parametros
   // Este modulo asigna los valores por defecto inicializados en TCB y asigna eventlisteners para cambiar la TCB en funcion de lo
@@ -68,7 +58,41 @@ async function inicializaEventos() {
       TCB.parametros[event.target.id] = event.target.value == "" ? 0 : event.target.value;
     });
   }
-  document.getElementById("potenciaPanel").value = TCB.potenciaPanelInicio;
+
+  // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
+  const ficheroTarifa = "./datos/tarifas.json";
+  UTIL.debugLog("Tarifas leidas desde servidor:" + ficheroTarifa);
+  try {
+    const respuesta = await fetch(ficheroTarifa);
+    if (respuesta.status === 200) {
+      TCB.tarifas = await respuesta.json();
+    }
+  } catch (err) {
+    UTIL.debugLog("Error leyendo tarifas del servidor " + err.message + "<br>Seguimos con TCB");
+  }
+  
+  document.getElementById('tarifaFile').addEventListener("change", async function handleChange(event) {
+    if (this.files.length == 1) {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+          TCB.tarifas = JSON.parse(e.target.result);
+          TCB.tarifaActiva = document.getElementById('tarifa').value;
+          for (let i=0; i<=6; i++){
+            document.getElementById("tarifaP"+i).value = TCB.tarifas[TCB.tarifaActiva].precios[i];
+          }
+      }
+      reader.readAsText(this.files[0]);
+    }
+  });
+  
+
+  // Inicialización y evento asociado a la generación del informe pdf
+  document.getElementById('informe').addEventListener("click", function handleChange(event) { 
+    if (TCB.economicoCreado) {
+      generaInformePDF();
+    } else {
+        alert("debe procesar primero");
+    }});
 
   // Boton muestra/oculta ayuda
   document.getElementById("ayuda").addEventListener("click", function handleChange(event) { 

@@ -1,8 +1,8 @@
-**SOM Simulador - Analisis**
+# SOLIDAR - Descripción
 
 A continuación, la arquitectura básica a implementar en el simulador:
 
-image.png
+![Diagrama de flujo](https://github.com/joseluis-garcia/Solidar/blob/74183ea03e7e4dd4bf13689184696ba779255634/Esquema.jpg)
 
 ## Objetivo: 
 
@@ -28,9 +28,9 @@ El simulador puede funcionar en varios idiomas. Por ahora español-castellano (e
 
 ## Modulo de carga de rendimientos
 
-El rendimiento de la placa solar en cuanto a la energía producida en cada momento se obtiene de la fuente de datos PVGIS de la UE. (https://joint-research-centre.ec.europa.eu/pvgis-photovoltaic-geographical-information-system\_en)
+![Módulo de rendimiento](https://github.com/joseluis-garcia/Solidar/blob/7dc346e9226b0e83844ac5033ee5551f824d07a8/Modulo%20rendimiento.jpg)
 
-![](RackMultipart20220907-1-666xrx_html_57335a6aa309b59a.png)
+El rendimiento de la placa solar en cuanto a la energía producida en cada momento se obtiene de la fuente de datos PVGIS de la UE. (https://joint-research-centre.ec.europa.eu/pvgis-photovoltaic-geographical-information-system_es)
 
 - Mediante la utilización de un API documentado en ([https://joint-research-centre.ec.europa.eu/pvgis-photovoltaic-geographical-information-system/getting-started-pvgis/api-non-interactive-service\_en](https://joint-research-centre.ec.europa.eu/pvgis-photovoltaic-geographical-information-system/getting-started-pvgis/api-non-interactive-service_en)) podemos solicitar el rendimiento estimado de una instalación fotovoltaica en un punto definido por su latitud y longitud geográfica, el azimut (ángulo de orientación de las placas con respecto al sur) y el ángulo de inclinación de la placa con respecto a la plano horizontal.
 
@@ -72,7 +72,7 @@ Donde cada valor rendimiento es el resultado del promedio de los últimos 16 añ
 
 El objetivo es completar la matriz horaria de consumos para un periodo no inferior a 365 días.
 
-![](RackMultipart20220907-1-666xrx_html_8c24437ae5088c51.png)
+![Módulo de consumo](https://github.com/joseluis-garcia/Solidar/blob/734b4fd6616992818494445b67d1ada27158ad49/Modulo%20consumo.jpg)
 
 - El usuario es responsable de obtener el fichero de consumo horario de un periodo temporal de al menos un año conectándose al servicio que proveen las empresas distribuidoras. Los enlaces están disponibles en la pestaña proyecto.
 

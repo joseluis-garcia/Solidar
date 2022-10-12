@@ -210,7 +210,7 @@
                             <div class="col-md-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Tarifa</span>
+                                        <span class="input-group-text" id="basic-addon1" data-i18n="precios_LBL_tarifa"></span>
                                     </div>
                                     <select class="form-select col-md-2" id="tarifa"> -->
                                         <option value="2.0TD">2.0TD</option>
@@ -218,13 +218,28 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input class="form-control" type="file" accept=".json" class="custom-file-input" id="tarifaFile">
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <a href="./datos/tarifas.json" 
+                                            target="_blank" data-i18n="precios_LBL_ficheroTarifas"></a> 
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div id="tablaTarifas2.0TD" class="row">
                             <div class="col col-md-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">P1</span>
+                                        <span class="input-group-text" id="basic-addon1">P1</span>
                                     </div>
                                     <input type="number" id="tarifaP1" min="0" step="any" class="form-control text-end ">
                                 </div>
@@ -287,18 +302,18 @@
                         <hr/>
                 <!-- Seleccion del archivo con los consumos horarios CSV o potencia anual para el caso de perfil tipo REE -->
                         <div class="row align-items-center">
-                        <div class="col-md-3 mb-3">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input align-middle" type="radio" name="origen" id="desdeFichero" checked> <!-- Tiene evento de cambio asociado en Dispatcher-->    
-                                <label class="form-check-label align-middle" for="desdeFichero" ></label>
-                                    <a href="./datos/Enlaces para descarga CSV individual.htm" 
-                                    target="_blank" data-i18n="proyecto_LBL_guiaCSV"></a> 
-                                </label>
+                            <div class="col-md-3 mb-3">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input align-middle" type="radio" name="origen" id="desdeFichero" checked> <!-- Tiene evento de cambio asociado en Dispatcher-->    
+                                    <label class="form-check-label align-middle" for="desdeFichero" ></label>
+                                        <a href="./datos/Enlaces para descarga CSV individual.htm" 
+                                        target="_blank" data-i18n="proyecto_LBL_guiaCSV"></a> 
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-8">
-                            <input class="form-control" type="file" accept=".csv" id="csvfile"> <!-- Tiene evento de cambio asociado en Dispatcher-->
-                        </div>
+                            <div class="col-md-8">
+                                <input class="form-control" type="file" accept=".csv" id="csvfile"> <!-- Tiene evento de cambio asociado en Dispatcher-->
+                            </div>
                         </div>
 
                         <div class="row align-items-center">
@@ -590,6 +605,10 @@
                         <div class="row mb-3">
                             <label for="interesVAN" class="col-md-5 col-form-label" data-i18n="parametros_LBL_interesVAN"></label>
                             <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="interesVAN"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="potenciaPanelInicio" class="col-md-5 col-form-label" data-i18n="parametros_LBL_potenciaPanelInicio"></label>
+                            <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="potenciaPanelInicio"></div>
                         </div>
 
                         <div class="input-group mb-3">

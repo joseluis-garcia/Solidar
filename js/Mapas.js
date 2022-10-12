@@ -113,8 +113,9 @@ export default function mapaLocalizacion() {
       point1 = ol.proj.transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
 
       // Vamos a verificar si el punto dado esta en España
-      UTIL.debugLog("Verifica punto España:", point1);
-      let url = "https://nominatim.openstreetmap.org/reverse?lat="+point1[1].toFixed(4)+"&lon="+point1[0].toFixed(4)+"&format=json&zoom=5";
+      let url = "https://nominatim.openstreetmap.org/reverse?lat="+point1[1].toFixed(4)+"&lon="+point1[0].toFixed(4)+
+                    "&format=json&zoom=5&accept-language='es'";
+      UTIL.debugLog("Call reverse Nominatim :" + url);
       const respTerritorio = await fetch(url);
       if (respTerritorio.status === 200) {
         let datoTerritorio = await respTerritorio.text();

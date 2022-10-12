@@ -56,7 +56,7 @@ export default async function _Dispatch(accion) {
         return status;
       }
 
-      case "Produccion":
+    case "Produccion":
       UTIL.debugLog("Dispatch -> _initProduccion");
       status = await _initProduccion();
       if (!status) {
@@ -172,9 +172,9 @@ async function _initConsumos(desde) {
 // Función de construccion objeto Instalacion inicial ----------------------------------------------------------------------
 async function _initInstalacion() {
 
-  let tmpPaneles = Math.ceil(TCB.consumo.maximoAnual / TCB.potenciaPanelInicio); //Para empezar ponemos un panel de potencia definida en TCB defaults
-  UTIL.debugLog("_initInstalacion con" + tmpPaneles + " paneles de " + TCB.potenciaPanelInicio + "kWp");
-  TCB.instalacion = new Instalacion(tmpPaneles, TCB.potenciaPanelInicio); //Creamos una instalación por defecto que cubra el consumo maximo anual
+  let tmpPaneles = Math.ceil(TCB.consumo.maximoAnual / TCB.parametros.potenciaPanelInicio); //Para empezar ponemos un panel de potencia definida en TCB defaults
+  UTIL.debugLog("_initInstalacion con" + tmpPaneles + " paneles de " + TCB.parametros.potenciaPanelInicio + "kWp");
+  TCB.instalacion = new Instalacion(tmpPaneles, TCB.parametros.potenciaPanelInicio); //Creamos una instalación por defecto que cubra el consumo maximo anual
   TCB.instalacionCreada = true;
   return true;
 

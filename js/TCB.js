@@ -59,9 +59,10 @@ const TCB = {
         euroxkWpinstalado : 1400,
         perdidasSistema : 14,
         interesVAN : 3,
-        tecnologia : 'crystSi'
+        tecnologia : 'crystSi',
+        potenciaPanelInicio : 0.450
     },
-    potenciaPanelInicio : 0.450
+    //potenciaPanelInicio : 0.450
 }
 export default TCB
 
