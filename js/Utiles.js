@@ -255,14 +255,16 @@ function muestraBalanceEnergia() {
   muestra("produccionMediaMensual", "", formatNumber(TCB.produccion.totalAnual / 12, 2), " kWh");
   muestra("produccionMediaAnual", "",formatNumber(TCB.produccion.totalAnual, 2)," kWh");
   muestra("CO2Anual", "",formatNumber(TCB.parametros.conversionCO2 * TCB.produccion.totalAnual, 2)," kg");
-  muestra("porcientoEnergiaAhorrada", "",formatNumber(TCB.produccion.totalAnual / TCB.consumo.totalAnual * 100, 2)," %");
-  if (TCB.produccion.totalAnual / TCB.consumo.totalAnual > 0.8) {
-    document.getElementById("porcientoEnergiaAhorrada").style.color = 'red';
-  } else {
-    document.getElementById("porcientoEnergiaAhorrada").style.color = 'black';
-  }
 
+  muestra("porcientoEnergiaAhorrada", "",formatNumber(TCB.produccion.totalAnual / TCB.consumo.totalAnual * 100, 2)," %");
+  
+  if (TCB.consumo.totalAnual / TCB.produccion.totalAnual < 0.8) {
+    document.getElementById("porcientoEnergiaAhorradaGenerada").style.color = 'red';
+  } else {
+    document.getElementById("porcientoEnergiaAhorradaGenerada").style.color = 'black';
+  }
   muestra("porcientoEnergiaAhorradaGenerada", "",formatNumber(TCB.consumo.totalAnual / TCB.produccion.totalAnual * 100, 2)," %");
+
   let p_autoconsumo = (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100;
   let p_autosuficiencia = (TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100;
   muestra("porcientoAutoconsumo", formatNumber(TCB.balance.autoconsumo, 2) + " kWh -> ",

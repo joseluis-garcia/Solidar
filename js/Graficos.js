@@ -366,7 +366,7 @@ export default class Graficos {
         Plotly.react(donde1, data1, layout);
     }
 
-    plotAlternativas (donde, potencia_kWp, paneles, TIR, autoconsumo, prodvscons, precioInstalacion, ahorroAnual, limiteSubvencion) {
+    plotAlternativas (donde, potencia_kWp, paneles, TIR, autoconsumo, autosuficiencia, precioInstalacion, ahorroAnual, limiteSubvencion) {
 
         var trace_TIR = {
             x: paneles,
@@ -375,10 +375,10 @@ export default class Graficos {
             type: 'scatter'
         };
 
-        var trace_prodvscons = {
+        var trace_autosuficiencia = {
             x: paneles,
-            y: prodvscons,
-            name: i18next.t('graficos_LBL_graficasprodvscons') + "(%)",
+            y: autosuficiencia,
+            name: i18next.t('graficos_LBL_graficasAutosuficiencia') + "(%)",
             type: 'scatter'
         };
 
@@ -431,7 +431,7 @@ export default class Graficos {
                   {
                     type: 'line',
                     x0: TCB.instalacion.paneles, y0: 0,
-                    x1: TCB.instalacion.paneles, y1: prodvscons[prodvscons.length-1],
+                    x1: TCB.instalacion.paneles, y1: 100,
                     line: {color: 'rgb(55, 128, 191)', width: 3}
                   },
                     {
@@ -460,7 +460,7 @@ export default class Graficos {
                     ay: 0
                 },
                 {
-                    x: TCB.instalacion.paneles, y: prodvscons[prodvscons.length-1],
+                    x: TCB.instalacion.paneles, y: 100,
                     xref: 'x', yref: 'y',
                     text: i18next.t("graficos_LBL_paneles"),
                     showarrow: true,
@@ -472,7 +472,7 @@ export default class Graficos {
                 }]
         };
 
-        var data = [trace_TIR, trace_autoconsumo, trace_prodvscons, trace_precioInstalacion, trace_ahorroAnual];
+        var data = [trace_TIR, trace_autoconsumo, trace_autosuficiencia, trace_precioInstalacion, trace_ahorroAnual];
         Plotly.react(donde, data, layout)
 
         var gd = document.getElementById(donde);

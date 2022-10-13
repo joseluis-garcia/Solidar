@@ -366,8 +366,9 @@ async function loopAlternativas() {
   var paneles = [];
   var autoconsumo = [];
   var TIR = [];
-  var prodvscons = [];
+  var autosuficiencia = [];
   var precioInstalacion = [];
+  var consvsprod = [];
   var ahorroAnual = [];
 
   intentos.forEach((intento) => {
@@ -377,7 +378,8 @@ async function loopAlternativas() {
       _initEconomico();
       paneles.push(_pan);
       autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100);
-      prodvscons.push((TCB.produccion.totalAnual / TCB.consumo.totalAnual) * 100);
+      autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100);
+      consvsprod.push((TCB.consumo.totalAnual/TCB.produccion.totalAnual) * 100);
       TIR.push(TCB.economico.TIRProyecto);
       precioInstalacion.push(TCB.instalacion.precioInstalacion());
       ahorroAnual.push(TCB.economico.ahorroAnual);
@@ -390,10 +392,10 @@ async function loopAlternativas() {
 
   //Buscamos punto en el que la produccion represente el 80% del consumo anual total
   let i = 0;
-  while (prodvscons[i] < 80) i++;
-  let pendiente = (prodvscons[i] - prodvscons[i-1]) / (paneles[i] - paneles[i-1]);
-  let dif = 80 - prodvscons[i-1];
-  let limiteSubvencion = paneles[i-1] + dif / pendiente; 
+  while (consvsprod[i] > 80) i++;
+  let pendiente = (consvsprod[i] - consvsprod[i-1]) / (paneles[i] - paneles[i-1]);
+  let dif = 80 - consvsprod[i-1];
+  let limiteSubvencion = paneles[i-1] + dif / pendiente;
 
   TCB.graficos.plotAlternativas(
     "graf_5",
@@ -401,7 +403,7 @@ async function loopAlternativas() {
     paneles,
     TIR,
     autoconsumo,
-    prodvscons,
+    autosuficiencia,
     precioInstalacion,
     ahorroAnual,
     limiteSubvencion

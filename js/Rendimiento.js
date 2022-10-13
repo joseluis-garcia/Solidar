@@ -75,7 +75,6 @@ export default class Rendimiento {
       addurl;
 
     UTIL.debugLog("PVGIS url:" + url);
-
     try {
       const respuesta = await fetch(url);
 

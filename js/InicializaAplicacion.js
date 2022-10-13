@@ -322,8 +322,8 @@ async function inicializaEventos() {
     const subvencion = document.getElementById("subvencionEU");
     subvencion.addEventListener("change", function handleChange(event) {
       //let tauto = TCB.balance.autoconsumo / TCB.produccion.totalAnual * 100;
-      let tauto = TCB.produccion.totalAnual / TCB.consumo.totalAnual * 100;
-      if (tauto > 80) {
+      let tauto = TCB.consumo.totalAnual / TCB.produccion.totalAnual * 100;
+      if (tauto < 80) {
         alert (i18next.t("precios_msg_limiteAutoconsumo", {autoconsumo: tauto.toFixed(2)}));
         subvencion.value = 0;
       } else {
