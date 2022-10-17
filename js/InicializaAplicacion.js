@@ -94,7 +94,6 @@ async function inicializaEventos() {
     }
   });
   
-
   // Inicialización y evento asociado a la generación del informe pdf
   document.getElementById('informe').addEventListener("click", function handleChange(event) { 
     if (TCB.economicoCreado) {
