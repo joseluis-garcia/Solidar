@@ -59,7 +59,6 @@ export default class Graficos {
             "%{xaxis.title.text}: %{x}<br>" +
             i18next.t('graficos_LBL_graficasConsumo') + ": %{z:.2f} kWh"
         };
-        alert(g_consumo.type);
 
         var layout_resumen = {
             title: {
