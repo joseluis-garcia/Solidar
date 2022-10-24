@@ -392,9 +392,11 @@ async function loopAlternativas() {
 
   //Buscamos punto en el que la produccion represente el 80% del consumo anual total
   let i = 0;
+  console.log(consvsprod);
   while (consvsprod[i] > 80) i++;
   let pendiente = (consvsprod[i] - consvsprod[i-1]) / (paneles[i] - paneles[i-1]);
   let dif = 80 - consvsprod[i-1];
+  console.log(dif + "-" + pendiente + "-" + i + " - " + paneles[i-1]);
   let limiteSubvencion = paneles[i-1] + dif / pendiente;
 
   TCB.graficos.plotAlternativas(

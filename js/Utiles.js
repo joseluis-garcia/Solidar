@@ -55,6 +55,7 @@ function debugLog(msg, obj) {
 }
 
 function mete(unDia, idxTable, outTable) {
+
   var indiceDia = indiceDesdeDiaMes(unDia.dia, unDia.mes);
   for (let hora = 0; hora < 24; hora++) {
     if (idxTable[indiceDia].previos > 0) {
@@ -250,31 +251,32 @@ function muestraBalanceEnergia() {
   muestra("PFVDiaria", "", formatNumber(TCB.consumo.totalAnual / TCB.consumo.numeroDias, 2), " kWh");
   muestra("PFVMensual", "", formatNumber(TCB.consumo.totalAnual / 12, 2), " kWh");
   muestra("PFVAnual", "", formatNumber(TCB.consumo.totalAnual, 2), " kWh");
-  muestra("potenciaDisponible", "", formatNumber(TCB.instalacion.potenciaTotal(), 2), " kW");
+  muestra("potenciaDisponible", "", formatNumber(TCB.instalacion.potenciaTotal(), 2), " kWp");
   muestra("produccionMediaDiaria", "", formatNumber(TCB.produccion.totalAnual / 365, 2), " kWh");
   muestra("produccionMediaMensual", "", formatNumber(TCB.produccion.totalAnual / 12, 2), " kWh");
   muestra("produccionMediaAnual", "",formatNumber(TCB.produccion.totalAnual, 2)," kWh");
+
+  muestra("energiaSobrante", "", formatNumber(TCB.balance.excedenteAnual,2), " kWh");
+  muestra("energiaSobrante%Produccion", "", formatNumber(TCB.balance.excedenteAnual / TCB.produccion.totalAnual * 100, 2), "%");
+  muestra("energiaFaltante", "", formatNumber(TCB.balance.deficitAnual,2), " kWh"); 
+  muestra("energiaFaltante%Consumo", "", formatNumber(TCB.balance.deficitAnual / TCB.consumo.totalAnual * 100, 2), "%");
   muestra("CO2Anual", "",formatNumber(TCB.parametros.conversionCO2 * TCB.produccion.totalAnual, 2)," kg");
 
+  muestra("porcientoEnergiaAhorradaGenerada", "",formatNumber(TCB.consumo.totalAnual / TCB.produccion.totalAnual * 100, 2)," %");
   muestra("porcientoEnergiaAhorrada", "",formatNumber(TCB.produccion.totalAnual / TCB.consumo.totalAnual * 100, 2)," %");
-  
-  if (TCB.consumo.totalAnual / TCB.produccion.totalAnual < 0.8) {
+    if (TCB.consumo.totalAnual / TCB.produccion.totalAnual < 0.8) {
     document.getElementById("porcientoEnergiaAhorradaGenerada").style.color = 'red';
   } else {
     document.getElementById("porcientoEnergiaAhorradaGenerada").style.color = 'black';
   }
-  muestra("porcientoEnergiaAhorradaGenerada", "",formatNumber(TCB.consumo.totalAnual / TCB.produccion.totalAnual * 100, 2)," %");
-
+  
   let p_autoconsumo = (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100;
   let p_autosuficiencia = (TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100;
   muestra("porcientoAutoconsumo", formatNumber(TCB.balance.autoconsumo, 2) + " kWh -> ",
              formatNumber(p_autoconsumo, 2), "%");
   muestra("porcientoAutosuficiencia", "", formatNumber(p_autosuficiencia, 2), "%");
   muestra("autosuficienciaMaxima", "",formatNumber(p_autosuficiencia + 100 - p_autoconsumo, 2),"%");
-  muestra("energiaSobrante", formatNumber(TCB.balance.excedenteAnual,2) + " kWh -> ",
-              formatNumber(TCB.balance.excedenteAnual / TCB.produccion.totalAnual * 100, 2), "%");
-  muestra("energiaFaltante", formatNumber(TCB.balance.deficitAnual,2) + " kWh -> ", 
-              formatNumber(TCB.balance.deficitAnual / TCB.consumo.totalAnual * 100, 2), "%");
+
 
   TCB.graficos.resumen_3D("graf_resumen");
   TCB.graficos.consumos_y_generacion("graf_1");

@@ -43,7 +43,7 @@ async function generaInformePDF() {
     nuevaLinea('Titulo', i++, null, i18next.t('informe_LBL_datosInstalacionAnalizada'));
     nuevaLinea('Dato', i++, i18next.t('resultados_LBL_panelesMinimo'), formatNumber(TCB.instalacion.paneles, 0) , "");
     nuevaLinea('Dato', i++, i18next.t('resultados_LBL_potenciaPanel') , formatNumber(TCB.instalacion.potenciaUnitaria, 3), "kW");
-    nuevaLinea('Dato', i++, i18next.t('resultados_LBL_potenciaDisponible'), formatNumber(TCB.instalacion.potenciaTotal(), 2), "kW");
+    nuevaLinea('Dato', i++, i18next.t('resultados_LBL_potenciaDisponible'), formatNumber(TCB.instalacion.potenciaTotal(), 2), "kWp");
     nuevaLinea('Dato', i++, i18next.t('proyecto_LBL_inclinacion'), formatNumber(TCB.rendimiento.inclinacion, 2), "º");
     nuevaLinea('Dato', i++, i18next.t('proyecto_LBL_azimut'), formatNumber(TCB.rendimiento.azimut, 2), "º");
     nuevaLinea('Dato', i++, i18next.t('resultados_LBL_system_loss'), formatNumber(TCB.rendimiento.system_loss, 2), "%");

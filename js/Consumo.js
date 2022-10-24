@@ -50,7 +50,6 @@ export default class Consumo {
           }
         }
         UTIL.debugLog("Consumo procesando " + data.length + " registros del fichero " + this.csvFile.name);
-
         try {
           var lastFecha = new Date(1970, 1, 1);
           var hora;
@@ -60,9 +59,16 @@ export default class Consumo {
           if (desde.fuente == "REE") decimalCaracter = ".";
           if (desde.fuente == "CSV") decimalCaracter = ",";
 
-          for (var i = 0; i < data.length - 1; i++) {
-            lastLine = data[i];
+          // Se han detectado ficheros de Naturgy con registros vacios al final del mismo
+          // si el campo fecha viene vacio consideramos que hay que ignorar el regsitro
+          let vacio = false; 
 
+          for (var i = 0; i < data.length; i++) {
+            lastLine = data[i];
+            if (data[i]["Fecha"] === "") {
+              vacio = true;
+              continue;
+            }
             //Para gestionar fechas en formato dd/mm/aaaa como vienen en el CSV debamos invertir a aaaa/mm/dd en javascript
             let parts = data[i]["Fecha"].split("/"); //separamos la hora
             let _dia = parts[0];
@@ -76,7 +82,6 @@ export default class Consumo {
             let currFecha = new Date(_ano, _mes, _dia, 0, 0);
 
             if (_mes == 1 && _dia == 29) continue; //Ignoramos el 29/2 de los años bisiestos
-
             //Registramos los datos del primer registro
             if (i == 0) {
               this.fechaInicio = currFecha;
@@ -112,13 +117,10 @@ export default class Consumo {
                   ) * this.consumoBase;
               }
               lastFecha = currFecha;
-              if (unDia.valores[hora] == 0) {
-                console.log("0000-" + unDia.dia + "/" + unDia.mes);
-              }
             }
           }
-
-          UTIL.mete(unDia, this.idxTable, this.diaHora);
+          // Si el ultimo registro no vino vacio lo metemos
+          if (!vacio) UTIL.mete(unDia, this.idxTable, this.diaHora);
 
           this.fechaFin = lastFecha;
           this.horaFin = hora;
@@ -126,7 +128,7 @@ export default class Consumo {
           resolve();
         } catch (error) {
           this.numeroRegistros = 0;
-          console.log("Error lectura con: " + lastLine + "\n" + error);
+          console.log("Error lectura en linea: " + i-1 + "\n" + error);
           reject(error);
         }
       };

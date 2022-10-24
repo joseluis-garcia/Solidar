@@ -37,6 +37,7 @@ export default class Graficos {
 
         var g_consumo = {
             z: TCB.consumo.diaHora,
+            y: TCB.consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
             name: i18next.t('graficos_LBL_graficasConsumo'),
             type: 'contour',
             colorscale: [
@@ -52,19 +53,27 @@ export default class Graficos {
             zsmooth: 'best',
             connectgaps: true,
             showlegend: true,
-            showscale: true
+            showscale: true,
+            hovertemplate:
+            "%{yaxis.title.text}: %{y}<br>" +
+            "%{xaxis.title.text}: %{x}<br>" +
+            i18next.t('graficos_LBL_graficasConsumo') + ": %{z:.2f} kWh"
         };
+        alert(g_consumo.type);
 
         var layout_resumen = {
             title: {
                 text: i18next.t('graficos_LBL_graficasConsumo'),
-                xanchor: 'left', // or 'auto', which matches 'left' in this case
+                xanchor: 'left', 
                 yanchor: 'bottom',
                 x: 0,
                 y: 0.5,
               },
             xaxis:{title: i18next.t('graficos_LBL_graficasHora')},
-            yaxis:{title: i18next.t('graficos_LBL_graficasDia')},
+            yaxis:{title: i18next.t('graficos_LBL_graficasDia'),
+                tickvals: UTIL.indiceDia.map((e) => {return (e[1])}),
+                ticktext: UTIL.nombreMes,
+            },
             zaxis:{title: 'kWh'},
             paper_bgcolor:'rgba(0,0,0,0)',
             plot_bgcolor:'rgba(0,0,0,0)',
@@ -74,14 +83,22 @@ export default class Graficos {
                 r: 10,
                 b: 65,
                 t: 25
-              },
-            annotations: [],
+            },
+            annotations: [{
+                x: 0, y: UTIL.indiceDesdeFecha(TCB.consumo.fechaInicio),
+                xref: 'x', yref: 'y',
+                text: 'Inicio',
+                xanchor: 'right',
+                textangle: 0,
+                ax: -20,
+                ay: 0
+            }],
             shapes: [{
                   type: 'line',
                   x0: -0.5, y0: UTIL.indiceDesdeFecha(TCB.consumo.fechaInicio),
                   x1: 23.5, y1: UTIL.indiceDesdeFecha(TCB.consumo.fechaInicio),
                   line: {color: 'rgb(255, 0, 0)', width: 3}
-                }],
+            }],
         };
 
         var inicioAnotation = {
@@ -93,18 +110,7 @@ export default class Graficos {
             ax: -20,
             ay: 0
         };
-        layout_resumen.annotations.push(inicioAnotation);
-        for (let i=0; i<12; i++) {
-            layout_resumen.annotations.push({
-                    x: 0, y: UTIL.indiceDia[i][1],
-                    xref: 'x', yref: 'y',
-                    text: UTIL.nombreMes[i],
-                    xanchor: 'left',
-                    textangle: -90,
-                    ax: -15,
-                    ay: -15
-            });
-        }
+
         Plotly.react(donde1, [g_consumo], layout_resumen);
 
         var gd = document.getElementById(donde1);
@@ -153,8 +159,8 @@ export default class Graficos {
             var layout = {
                 paper_bgcolor:'rgba(0,0,0,0)',
                 plot_bgcolor:'rgba(0,0,0,0)',
-                title: "Dia:" + fecha[0] + "/" + (parseInt(fecha[1])+1),
-                xaxis: {title: TCB.i18next.t('graficos_LBL_graficasHora'), dtick: 1},
+                title: "Dia:" + fecha[0] + " - " + TCB.i18next.t(UTIL.nombreMes[parseInt(fecha[1])]),
+                xaxis: {title: TCB.i18next.t('graficos_LBL_graficasHora'), dtick: 2},
                 yaxis: {title: 'kWh', showline: true, zeroline: true, zerolinecolor :'#969696', zeroline : true, gridcolor : '#bdbdbd', gridwidth : 2 }
             };
             Plotly.react(donde2, [trace1, trace2], layout);
@@ -165,52 +171,57 @@ export default class Graficos {
 
     var g_produccion = {
         z: TCB.produccion.diaHora,
+        y: TCB.consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
         name: i18next.t('graficos_LBL_graficasProduccion'),
         type: 'surface',
         colorscale: 'YlOrRd',
         opacity:1,
         showlegend:true,
-        showscale: false
-    };
+        showscale: false,
+        hovertemplate:
+            TCB.i18next.t('graficos_LBL_graficasHora') + ": %{y}<br>" +
+            TCB.i18next.t('graficos_LBL_graficasHora') + ": %{x}<br>" +
+            i18next.t('graficos_LBL_graficasProduccion') + ": %{z:.2f} kWh"
+        };
 
     var g_consumo = {
         z: TCB.consumo.diaHora,
+        y: TCB.consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
         name: i18next.t('graficos_LBL_graficasConsumo'),
         type: 'surface',
         colorscale: 'Picnic',
         opacity:0.8,
         showlegend:true,
-        showscale: false
-    };
+        showscale: false,
+        hovertemplate:
+            TCB.i18next.t('graficos_LBL_graficasHora') + ": %{y}<br>" +
+            TCB.i18next.t('graficos_LBL_graficasHora') + ": %{x}<br>" +
+            TCB.i18next.t('graficos_LBL_graficasConsumo') + ": %{z:.2f} kWh"
+        };
   
     var layout_resumen = {
         paper_bgcolor:'rgba(0,0,0,0)',
         plot_bgcolor:'rgba(0,0,0,0)',
         title: {
             text: i18next.t('graficos_LBL_graficasProduccion') + " vs " + i18next.t('graficos_LBL_graficasConsumo'),
-            xanchor: 'left', // or 'auto', which matches 'left' in this case
+            xanchor: 'left', 
             yanchor: 'bottom',
             x: 0,
-            y: 0.5,
-          },
-        scene: {
-            xaxis:{title: TCB.i18next.t('graficos_LBL_graficasHora')},
-            yaxis:{title: TCB.i18next.t('graficos_LBL_graficasDia')},
-            zaxis:{title: 'kWh'},
-            camera: {eye: {x: -1.5, y: -1.5, z: 0.5}}
+            y: 0.5
             },
-        autosize: false,
 
+        scene: {camera: {eye: {x: -1.5, y: -1.5, z: 0.5}},
+            xaxis:{title: TCB.i18next.t('graficos_LBL_graficasHora')},
+            yaxis:{title: TCB.i18next.t('graficos_LBL_graficasDia'),
+                tickvals: UTIL.indiceDia.map((e) => {return (e[1])}),
+                ticktext: UTIL.nombreMes},
+            zaxis:{title: 'kWh'}},
+        autosize: false,
         width: 1200,
         height: 600,
-        margin: {
-            l: 200,
-            r: 0,
-            b: 65,
-            t: 25
-          }
-    };
-
+        margin: {l: 200, r: 0, b: 65, t: 25},
+        }
+        
     Plotly.react(donde, [g_consumo, g_produccion], layout_resumen);
     }
 
@@ -411,7 +422,7 @@ export default class Graficos {
             plot_bgcolor:'rgba(0,0,0,0)',
             width: 800,
             height: 500,
-            title: i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatNumber(potencia_kWp, 3)}),
+            title: TCB.i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatNumber(potencia_kWp, 3)}),
             xaxis: {
                 title: i18next.t('graficos_LBL_paneles')
             },
@@ -428,49 +439,53 @@ export default class Graficos {
                 orientation:'v'
             },
             shapes: [
-                  {
-                    type: 'line',
-                    x0: TCB.instalacion.paneles, y0: 0,
-                    x1: TCB.instalacion.paneles, y1: 100,
-                    line: {color: 'rgb(55, 128, 191)', width: 3}
-                  },
-                    {
-                    type: 'line',
-                    x0: 0, y0: 80,
-                    x1: limiteSubvencion, y1: 80,
-                    line: {color: 'rgb(87, 202, 0)', width: 2}
-                    },
-                    {
-                    type: 'line',
-                    x0: limiteSubvencion, y0: 0,
-                    x1: limiteSubvencion, y1: 80,
-                    line: {color: 'rgb(87, 202, 0)', width: 2}
-                    }
-                ],
-            annotations: [
                 {
-                    x: limiteSubvencion, y: 80,
-                    xref: 'x', yref: 'y',
-                    text: i18next.t("precios_LBL_subvencionEU"),
-                    showarrow: true,
-                    arrowhead: 3,
-                    xanchor: 'left',
-                    hovertext: limiteSubvencion.toFixed(1) + " " + i18next.t("graficos_LBL_paneles"),
-                    ax: 20,
-                    ay: 0
+                type: 'line',
+                x0: TCB.instalacion.paneles, y0: 0,
+                x1: TCB.instalacion.paneles, y1: 100,
+                line: {color: 'rgb(55, 128, 191)', width: 3}
                 },
+                {
+                type: 'line',
+                x0: 0, y0: 80,
+                x1: limiteSubvencion, y1: 80,
+                line: {color: 'rgb(87, 202, 0)', width: 2}
+                },
+                {
+                type: 'line',
+                x0: limiteSubvencion, y0: 0,
+                x1: limiteSubvencion, y1: 80,
+                line: {color: 'rgb(87, 202, 0)', width: 2}
+                }
+            ],
+            annotations: [
                 {
                     x: TCB.instalacion.paneles, y: 100,
                     xref: 'x', yref: 'y',
-                    text: i18next.t("graficos_LBL_paneles"),
+                    text: TCB.instalacion.paneles + " " + TCB.i18next.t("graficos_LBL_paneles"),
                     showarrow: true,
                     arrowhead: 2,
                     xanchor: 'left',
-                    hovertext: i18next.t("graficos_LBL_panelesActuales",{paneles: TCB.instalacion.paneles}),
+                    hovertext: TCB.i18next.t("graficos_LBL_panelesActuales",{paneles: TCB.instalacion.paneles}),
                     ax: 20,
                     ay: -20
-                }]
+                }
+            ]
         };
+        
+        if (limiteSubvencion !== undefined) {
+            layout.annotations.push({
+                x: limiteSubvencion, y: 80,
+                xref: 'x', yref: 'y',
+                text: i18next.t("precios_LBL_subvencionEU"),
+                showarrow: true,
+                arrowhead: 3,
+                xanchor: 'left',
+                hovertext: limiteSubvencion.toFixed(1) + " " + i18next.t("graficos_LBL_paneles"),
+                ax: 20,
+                ay: 0
+            })
+        }
 
         var data = [trace_TIR, trace_autoconsumo, trace_autosuficiencia, trace_precioInstalacion, trace_ahorroAnual];
         Plotly.react(donde, data, layout)

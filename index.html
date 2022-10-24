@@ -159,7 +159,7 @@
                             <!-- Entrada inclinacion de los paneles -->
                             <label for="inclinacion" class="col-md-1 col-form-label" data-i18n="proyecto_LBL_inclinacion"></label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control tDyn" id="inclinacion" min="0" step="any" step="any"
+                                <input type="number" class="form-control tDyn" id="inclinacion" min="0" step="any"
                                 data-bs-toggle="tooltip" data-placement="top" title="main_MSG_mayorQueCero"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                             </div>
 
@@ -410,34 +410,69 @@
                             <div class="col-md-2 offset-md-1" data-i18n="resultados_LBL_produccionMediaAnual"></div>
                             <div class="col-md-2 text-end" id="produccionMediaAnual"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
                         </div>
-                        <hr/>
-                        <div class="form-group row justify-content-center">
-                            <div class="col-md-3" data-i18n="resultados_LBL_kgCO2AnualAhorrado"></div>
-                            <div class="col-md-1  text-end" id="CO2Anual"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
-                        </div>
-                        <hr/>
-                        <div class="form-group row justify-content-center">
-                            <div class="col-md-2" data-i18n="resultados_LBL_energiaAhorrada"></div>
-                            <div class="col-md-2 text-end" id="porcientoEnergiaAhorrada">
-                                <a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
 
-                            <div class="col-md-2 offset-md-1" data-i18n="resultados_LBL_energíaDemandadaVersusGenerada"></div>
-                            <div class="col-md-2 text-end text-end" id="porcientoEnergiaAhorradaGenerada"
-                                data-bs-toggle="tooltip" data-placement="top" title="Limite subvencion EU >80%">
-                                <a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
-                        </div>
                         <hr/>
+
                         <div class="row justify-content-center">
-                            <div class="col-md-2" data-i18n="resultados_LBL_energiaSobrante"></div>
-                            <div class="col-md-2 text-end" id="energiaSobrante"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
-                            <div class="col-md-2 offset-md-1" data-i18n="resultados_LBL_energiaFaltante"></div>
+                            <div class="col-md-2 tDyn" data-i18n="resultados_LBL_energiaFaltante"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_energiaFaltante">
+                            </div>
                             <div class="col-md-2 text-end" id="energiaFaltante"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
+                            <div class="col-md-2 offset-md-1 tDyn" data-i18n="resultados_LBL_energiaSobrante"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_energiaSobrante">
+                            </div>
+                            <div class="col-md-2 text-end" id="energiaSobrante"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-2 tDyn" data-i18n="resultados_LBL_energiaFaltante%Consumo"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_energiaFaltante%Consumo">
+                            </div>
+                            <div class="col-md-2 text-end" id="energiaFaltante%Consumo"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
+
+                            <div class="col-md-2 offset-md-1 tDyn" data-i18n="resultados_LBL_energiaSobrante%Produccion"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_energiaSobrante%Produccion">
+                            </div>
+                            <div class="col-md-2 text-end" id="energiaSobrante%Produccion"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>    
+                        </div>
+
+
+                        <hr/>
+
+                        <div class="form-group row justify-content-center">
+                            <div class="col-md-2  tDyn" data-i18n="resultados_LBL_energíaDemandadaVersusGenerada"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_energíaDemandadaVersusGenerada">
+                            </div>
+                            <div class="col-md-2 text-end text-end" id="porcientoEnergiaAhorradaGenerada">
+                                <a data-i18n="resultados_LBL_pendienteCalculo"></a>
+                            </div>
+                            <div class="col-md-2 offset-md-1 tDyn" data-i18n="resultados_LBL_energiaAhorrada"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_energiaAhorrada">
+                            </div>
+                            <div class="col-md-2 text-end" id="porcientoEnergiaAhorrada">
+                                <a data-i18n="resultados_LBL_pendienteCalculo"></a>
+                            </div>
                         </div>
                         <hr/>
+                        
+
+
+                        <div class="form-group row justify-content-center">
+                            <div class="col-md-3 tDyn" data-i18n="resultados_LBL_kgCO2AnualAhorrado"></div>
+                            <div class="col-md-3  text-end" id="CO2Anual"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
+                        </div>
+                        <hr/>
+
                         <div class="row justify-content-center">
-                            <div class="col-md-3 text-center" data-i18n="resultados_LBL_autoconsumoMedioAnual"></div>
-                            <div class="col-md-3 text-center" data-i18n="resultados_LBL_autosuficienciaMediaAnual"></div>
-                            <div class="col-md-3 text-center" data-i18n="resultados_LBL_autosuficienciaMaxima"></div>
+                            <div class="col-md-3 text-center tDyn" data-i18n="resultados_LBL_autoconsumoMedioAnual"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_autoconsumoMedioAnual">
+                            </div>
+                            <div class="col-md-3 text-center tDyn" data-i18n="resultados_LBL_autosuficienciaMediaAnual"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_autosuficienciaMediaAnual">
+                            </div>
+                            <div class="col-md-3 text-center tDyn" data-i18n="resultados_LBL_autosuficienciaMaxima"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="resultados_TT_autosuficienciaMaxima">
+                        </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-3 text-center" id="porcientoAutoconsumo"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
