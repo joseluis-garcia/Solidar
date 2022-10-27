@@ -39,13 +39,19 @@ export default class Graficos {
             z: TCB.consumo.diaHora,
             y: TCB.consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
             name: i18next.t('graficos_LBL_graficasConsumo'),
-            type: 'contour',
-            colorscale: [
-                ['0.0', 'rgb(250,250,250)'],
-                ['0.10', 'rgb(240,240,240)'],
-                ['0.20', 'rgb(230,200,200)'],
-                ['0.5', 'rgb(220,120,150)'],
-                ['1.0', 'rgb(254,79,67)']],
+            type: 'heatmap',
+            colorscale: 
+             [
+                ['0.0', 'rgb(255,255,224)'],
+                ['0.10', 'rgb(255,255,224)'],
+                ['0.10', 'rgb(144,238,144)'],
+                ['0.25', 'rgb(144,238,144)'],
+                ['0.25', 'rgb(0,255,255)'],
+                ['0.5', 'rgb(0,255,255)'],
+                ['0.5', 'rgb(255,127,80)'],
+                ['0.75', 'rgb(255,127,80)'],
+                ['1.0', 'rgb(254,0,0)']
+            ],
             line: {
                 width:0.1,
                 smoothing: 0
@@ -96,18 +102,8 @@ export default class Graficos {
                   type: 'line',
                   x0: -0.5, y0: UTIL.indiceDesdeFecha(TCB.consumo.fechaInicio),
                   x1: 23.5, y1: UTIL.indiceDesdeFecha(TCB.consumo.fechaInicio),
-                  line: {color: 'rgb(255, 0, 0)', width: 3}
+                  line: {color: 'rgb(255, 0, 0)', width: 1}
             }],
-        };
-
-        var inicioAnotation = {
-            x: 0, y: UTIL.indiceDesdeFecha(TCB.consumo.fechaInicio),
-            xref: 'x', yref: 'y',
-            text: 'Inicio',
-            xanchor: 'right',
-            textangle: 0,
-            ax: -20,
-            ay: 0
         };
 
         Plotly.react(donde1, [g_consumo], layout_resumen);

@@ -98,8 +98,6 @@ El objetivo es completar la matriz horaria de consumos para un periodo no inferi
 
 - En caso de que para una fecha y hora hubiera más de un dato se registrará el promedio de los datos provistos.
 
-
-
 - La carga se realiza en el momento de identificar el fichero CSV.
 
 - En caso de que el usuario no disponga de un fichero CSV con su registro horario individualizado se podrá hacer una carga basándose en el perfil tipo definido por REE que para este año es: [Perfiles\_iniciales\_de\_consumo\_y\_demanda\_de\_referencia\_2022.xlsx (live.com)](https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.ree.es%2Fsites%2Fdefault%2Ffiles%2F01_ACTIVIDADES%2FDocumentos%2FDocumentacion-Simel%2FPerfiles_iniciales_de_consumo_y_demanda_de_referencia_2022.xlsx&wdOrigin=BROWSELINK)
@@ -127,4 +125,4 @@ Una vez cargados los consumos y el rendimiento unitario podemos empezar el proce
 
 ![](RackMultipart20220907-1-666xrx_html_9d8636647a263850.png)
 
-- La idea es poder definir una instalación que cumpla con el objetivo de alcanzar un autoconsumo del 50% para lo que el sistema propone una configuración inicial de paneles que cubra el consumo diario máximo de los datos de consumo cargados, después del bucle inicial de calculo de producción y balance donde se obtiene la primera valoración del autoconsumo, se aplica una corrección lineal, en cuanto al número de paneles, que permitirá acercarse al 50% buscado pasando a ser esta la propuesta inicial mostrada en los resultados.
+- La idea es poder definir una instalación que cumpla con el objetivo de alcanzar un autoconsumo del 50% para lo que el sistema propone una configuración inicial de paneles que cubra el consumo diario máximo de los datos de consumo cargados, después del bucle inicial de cálculo de producción y balance donde se obtiene la primera valoración del autoconsumo, se aplica una corrección lineal, en cuanto al número de paneles, que permitirá acercarse al 50% buscado pasando a ser esta la propuesta inicial mostrada en los resultados.

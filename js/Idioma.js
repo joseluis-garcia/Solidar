@@ -28,7 +28,7 @@
       // loop para traducir los tooltips
       let t_Dyns = document.querySelectorAll('.tDyn');
       for (var i = 0; i < t_Dyns.length; i++) { 
-          t_Dyns[i].title = i18next.t(t_Dyns[i].getAttribute('title')); 
+          t_Dyns[i].title = i18next.t(t_Dyns[i].getAttribute('name')); 
       }
     })
     };

@@ -40,6 +40,12 @@ async function inicializaEventos() {
   TCB.basePath = fullPath.slice(0, ipos + 1);
   UTIL.debugLog("_initEvents ejecutando desde " + TCB.basePath);
 
+  // Se incializan los tooltips
+  var tooltipList1 = [].slice.call(document.querySelectorAll('[data-bs-html="true"]'));
+  var tooltipList2 = tooltipList1.map(function (tooltipTriggerfun) {  
+    return new bootstrap.Tooltip(tooltipTriggerfun);  
+  }) 
+
   // Se pone la palabra localización en el campo de diraccion porque i18next no lo traduce.
   document.getElementById('direccion').value = i18next.t("proyecto_LBL_localizacion");
 

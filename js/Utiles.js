@@ -284,6 +284,10 @@ function muestraBalanceEnergia() {
 
 }
 
+function safeData(obj) {
+  console.log(JSON.stringify(obj));
+}
+
 async function muestraPestana ( nombre) {
   document.getElementById('titulo').innerHTML = TCB.i18next.t("ayuda_TIT_"+ nombre);
   //Esta es la version buena cuando esten todos los idiomas disponibles
@@ -348,6 +352,7 @@ export {
   muestraBalanceEnergia,
   muestraBalanceEconomico,
   formatNumber,
-  muestraPestana
+  muestraPestana,
+  safeData
 };
 window.dumpData = dumpData;
