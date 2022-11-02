@@ -62,7 +62,7 @@ https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?lat=LATITUD&lon=LONGITUD&pvcalcu
 
 - Por temas de seguridad (CORS) el servidor PVGIS no permite llamadas directas desde código javascript ejecutado en el browser por lo que se ha desarrollado un proxi (php) que nos permita hacer la llamada desde el servidor. 
 
-- El resultado de la carga es una matriz de 365 filas de objetos:
+- El resultado de la carga es una matriz {Rendimiento} de 365 filas de objetos:
 
 Ri = {día, mes, suma, máximo, rendimiento [0:23]} con índice i variando de 0 a 364
 
@@ -106,23 +106,40 @@ El objetivo es completar la matriz horaria de consumos para un periodo no inferi
 
 - REE ofrece perfiles de consumo anual para usuarios según la tarifa contratada por lo que el perfil que se cargará es el que corresponda a la tarifa que este seleccionada en pantalla.
 
-- El resultado de la carga es una matriz de 365 filas de objetos:
+- El resultado de la carga es una matriz {Consumo} de 365 filas de objetos:
 
 Ci = {día, mes, suma, máximo, consumo [0:23]} con índice i variando de 0 a 364.
 
-- El perfil de consumos se puede visualizar en el gráfico que aparece una vez cargado el fichero CSV o el perfil REE según se hubiera seleccionado.
+- El perfil de consumos se puede visualizar en el gráfico que aparece una vez cargado el fichero CSV o el perfil REE según se hubiera seleccionado. Este mapa de consumo indica mediante una leyenda de colores el consumo horario de cada hora de todos los dias del año.
+
+- Haciendo click sobre el mapa de consumo se visualiza el perfil del dia concreto sobre el que se hizo click.
 
 - Una vez definido el perfil de consumos horarios se puede pasar a la fase de resultados y analisis dando nuevamente a la flecha derecha.
 
-- La interfaz de usuario de este módulo es:
+## Propuesta de paneles inicial:
 
-![](RackMultipart20220907-1-666xrx_html_2e9f7bcc73a8b0d1.png)
+Una vez cargados los consumos y el rendimiento unitario podemos empezar el proceso inicial de cálculo.
+
+- La idea es poder definir una instalación que cumpla con el objetivo de alcanzar un autoconsumo del 50% para lo que el sistema cálcula una configuración inicial de paneles que cubra el consumo diario máximo de los datos de consumo cargados, después del bucle inicial de cálculo de producción y balance donde se obtiene la primera valoración del autoconsumo, se aplica una corrección lineal, en cuanto al número de paneles, que permitirá acercarse al 50% buscado pasando a ser esta la propuesta inicial mostrada en los resultados.
+
+## Balance de energia
+
+Teniendo un número de paneles inicial se calcularán los objetos necesarios para el funcionamiento de la aplicación:
+
+[Potencia disponible] = [Numero de paneles] * [Potencia Unitaria del panel]
+
+{Produccion} = {Rendimiento} * [Potencia disponible]
+
+{Balance} = {Consumo} - {Produccion}
+
+[Consumo demandado de red] = SUMA {Balance(dia,hora)} si {Balance(dia,hora) > 0}
+
+[Produccion vertida a la red] = SUMA {Balance(dia, hora)} si {Balance(dia, hora) < 0}
 
 
-## Bucle de optimización inicial:
 
-Una vez cargados los consumos y el rendimiento unitario podemos empezar el proceso de bucle inicial de optimización.
 
-![](RackMultipart20220907-1-666xrx_html_9d8636647a263850.png)
 
-- La idea es poder definir una instalación que cumpla con el objetivo de alcanzar un autoconsumo del 50% para lo que el sistema propone una configuración inicial de paneles que cubra el consumo diario máximo de los datos de consumo cargados, después del bucle inicial de cálculo de producción y balance donde se obtiene la primera valoración del autoconsumo, se aplica una corrección lineal, en cuanto al número de paneles, que permitirá acercarse al 50% buscado pasando a ser esta la propuesta inicial mostrada en los resultados.
+
+
+

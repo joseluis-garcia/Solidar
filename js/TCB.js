@@ -56,13 +56,24 @@ const TCB = {
         conversionCO2 : 0.440,
         impuestoElectrico : 5.113,
         IVA : 21.0,
-        euroxkWpinstalado : 1400,
         perdidasSistema : 14,
         interesVAN : 3,
         tecnologia : 'crystSi',
         potenciaPanelInicio : 0.450
     },
-    //potenciaPanelInicio : 0.450
+    precioInstalacion :[
+        {"desde":0, "hasta":2, "precio":2200},
+        {"desde":2, "hasta":5, "precio":1700},
+        {"desde":5, "hasta":10, "precio":1400},
+        {"desde":10, "hasta":15, "precio":1150},
+        {"desde":15, "hasta":20, "precio":1050},
+        {"desde":20, "hasta":25, "precio":1000},
+        {"desde":25, "hasta":100, "precio": 950}
+    ],
+    subvencionEU : {
+        'Individual': {'<=10kWp':600, '>10kWp': 450},
+        'Comunitaria' : {'<=10kWp':710, '>10kWp':535}
+    }
 }
 export default TCB
 

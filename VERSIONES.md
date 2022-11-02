@@ -24,3 +24,12 @@
 - Se añade un número al nombre de la pestaña para dejar mas claro que el proceso es una secuencia
 - Se modifican los nombres de los campos en el balance de energia para darle mas coherencia y se añaden los tooltips
 
+## 20221031:
+- Se quita la limitación de un número entero de paneles
+- Se añaden las instruccicones detalladas de como obtener el CSV en el portal de VIESGO
+- Nueva forma de calcular los precios de la instalación según tabla json
+- Modificación del cálculo de subvención EU
+- Se añade pantalla de bienvenida
+- Se añade limitación de responsabilidad en el report pdf
+
+

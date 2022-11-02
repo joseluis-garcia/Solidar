@@ -65,6 +65,18 @@ async function inicializaEventos() {
     });
   }
 
+  // lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
+  const ficheroPreciosInstalacion = "./datos/precios instalacion.json";
+  UTIL.debugLog("Precios instalación leidos desde servidor:" + ficheroPreciosInstalacion);
+  try {
+    const precios = await fetch(ficheroPreciosInstalacion);
+    if (precios.status === 200) {
+      TCB.precioInstalacion = await precios.json();
+    }
+  } catch (err) {
+    UTIL.debugLog("Error leyendo precios de instalación del servidor " + err.message + "<br>Seguimos con TCB");
+  }
+
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
   const ficheroTarifa = "./datos/tarifas.json";
   UTIL.debugLog("Tarifas leidas desde servidor:" + ficheroTarifa);
@@ -99,6 +111,22 @@ async function inicializaEventos() {
       reader.readAsText(this.files[0]);
     }
   });
+
+  // Formulario de bienvenida
+  const noMostrarMas = document.cookie.split('=')[1];
+   if (noMostrarMas === 'false' || noMostrarMas === undefined) {
+    const ficheroBienvenida = "./locales/" + 'es' + '-bienvenida.htm';
+    const text = await (await fetch(ficheroBienvenida)).text();
+    const formBienvenida = document.getElementById("formularioBienvenida");
+    document.getElementById('textoBienvenida').innerHTML = text;
+    formBienvenida.style.display = "block";
+    formBienvenida.classList.add("show");
+    document.getElementById('cerrarBienvenida').addEventListener("click", async function handleChange(event) {
+      document.cookie = "noMostrarMas=" + document.getElementById('noMostrarMas').checked;
+      formBienvenida.style.display = "none";
+      formBienvenida.classList.remove("show");
+    });
+  }
   
   // Inicialización y evento asociado a la generación del informe pdf
   document.getElementById('informe').addEventListener("click", function handleChange(event) { 
@@ -326,14 +354,7 @@ async function inicializaEventos() {
     // La subvención EU solo se puede aplicar cuando el autoconsumo es superior al 80%
     const subvencion = document.getElementById("subvencionEU");
     subvencion.addEventListener("change", function handleChange(event) {
-      //let tauto = TCB.balance.autoconsumo / TCB.produccion.totalAnual * 100;
-      let tauto = TCB.consumo.totalAnual / TCB.produccion.totalAnual * 100;
-      if (tauto < 80) {
-        alert (i18next.t("precios_msg_limiteAutoconsumo", {autoconsumo: tauto.toFixed(2)}));
-        subvencion.value = 0;
-      } else {
         Dispatch("Cambio subvencion");
-      }
     });
   
     // Evento para gestionar la subvención del IBI

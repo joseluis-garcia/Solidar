@@ -38,7 +38,7 @@ async function generaInformePDF() {
     nuevaLinea('Dato', i++, 'year_max', formatNumber(TCB.rendimiento.year_max, 0), "");
     nuevaLinea('Pie', pagina++, true);
   
-    var i = 1;
+    i = 1;
     nuevaLinea('Cabecera',null, null, i18next.t('main_LBL_titulo'));
     nuevaLinea('Titulo', i++, null, i18next.t('informe_LBL_datosInstalacionAnalizada'));
     nuevaLinea('Dato', i++, i18next.t('resultados_LBL_panelesMinimo'), formatNumber(TCB.instalacion.paneles, 0) , "");
@@ -60,7 +60,7 @@ async function generaInformePDF() {
       doc.addImage({imageData: dataURL, x: 40, y: 150, w:150, h:100})});
     nuevaLinea('Pie', pagina++, true);
   
-    var i = 1;
+    i = 1;
     nuevaLinea('Cabecera',null, null, i18next.t('main_LBL_titulo'));
     nuevaLinea('Titulo',i++, null, i18next.t('main_TAB_resultados'));
     nuevaLinea('Dato', i++, i18next.t('resultados_LBL_energiaAhorrada'), formatNumber((TCB.produccion.totalAnual / TCB.consumo.totalAnual) * 100, 2) , "%");
@@ -83,7 +83,7 @@ async function generaInformePDF() {
   
     nuevaLinea('Pie', pagina++, true);
   
-    var i = 1;
+    i = 1;
     nuevaLinea('Cabecera',null, null, i18next.t('main_LBL_titulo'));
     nuevaLinea('Titulo',i++, null, i18next.t('main_TAB_precios'));
     nuevaLinea('Dato', i++, "Tarifa : ", TCB.tarifaActiva, "");
@@ -104,7 +104,7 @@ async function generaInformePDF() {
       doc.addImage({imageData: dataURL, x: 40, y: 150, w:150, h:100})});
     nuevaLinea('Pie', pagina++, true);
   
-    var i = 1;
+    i = 1;
     nuevaLinea('Cabecera',null, null, i18next.t('main_LBL_titulo'));
     nuevaLinea('Titulo',i++, null, i18next.t('main_TAB_financiero') + " (Euros)");
   
@@ -130,6 +130,18 @@ async function generaInformePDF() {
       
     await Plotly.toImage('graf_5', { format: 'png', width: 800, height: 500 }).then(function (dataURL) {
         doc.addImage({imageData: dataURL, x: 40, y: 100, w:150, h:100})});
+
+    // Texto de descargo de responsabilidad
+    let disclaimer = "Todas las estimaciones dadas se han realizado con la mayor precisión posible,"+
+    "con la mejor intención y sin ningún compromiso.";
+    let lines = doc.splitTextToSize(disclaimer, 170);
+    doc.text(25,210,lines);
+    disclaimer = "Som Energia no tiene ningún interés económico ni directo ni indirecto en este "+
+    "estudio salvo contribuir a una transición energética justa con los usuarios, eficiente," +
+    "descentralizada y limpia.";
+    lines = doc.splitTextToSize(disclaimer, 170);
+    doc.text(25,225,lines);
+
     nuevaLinea('Pie', pagina++, false);
     doc.save('reporte.pdf');
   }

@@ -14,6 +14,9 @@ export default class Instalacion {
   }
 
   precioInstalacion() {
-    return this.potenciaTotal() * TCB.parametros.euroxkWpinstalado * (1 + TCB.parametros.IVA / 100);
+    let i = 0;
+    while (this.potenciaTotal() > TCB.precioInstalacion.precios[i].desde ) i++;
+    let precioFinal = this.potenciaTotal() * TCB.precioInstalacion.precios[i-1].precio * (1 + TCB.parametros.IVA / 100);
+    return precioFinal;
   }
 }

@@ -122,15 +122,20 @@ export default class Economico {
     const tiempoSubvencionIBI = document.getElementById("duracionSubvencionIBI").value;
     const valorSubvencionIBI = document.getElementById("valorIBI").value;
     const porcientoSubvencionIBI = document.getElementById("porcientoSubvencionIBI").value / 100;
+
+    // Calculo de la subvención EU
     const tipoSubvencionEU = document.getElementById("subvencionEU").value;
     var valorSubvencionEU;
-    var cuotaPeriodo = new Array(5).fill(0);
-
-    if ((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80) {
+    if ((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80 || tipoSubvencionEU === 'Sin') {
       valorSubvencionEU = 0;
     } else {
-      valorSubvencionEU = tipoSubvencionEU * TCB.instalacion.potenciaTotal();
+      if ( TCB.instalacion.potenciaTotal() <= 10) {
+        valorSubvencionEU = TCB.subvencionEU[tipoSubvencionEU]['<=10kWp'] * TCB.instalacion.potenciaTotal();
+      } else {
+        valorSubvencionEU = TCB.subvencionEU[tipoSubvencionEU]['>10kWp'] * TCB.instalacion.potenciaTotal();
+      }
     }
+    var cuotaPeriodo = new Array(5).fill(0);
 
     this.ahorroAnual = UTIL.suma(this.consumoOriginalMensual) - UTIL.suma(this.consumoConPlacasMensualCorregido);
     this.cashFlow[1].subvencion = valorSubvencionEU; //La subvención se cobra con suerte despues de un año

@@ -4,7 +4,6 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>SOM Madrid - Simulador de producción fotovoltaica individual</title>
 
     <!-- Bootstrap -->
@@ -22,6 +21,17 @@
             padding-left: 10px;
             width: 100%;
             height: 100vh;
+            border: solid 1px black;
+            overflow: scroll;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .divBienvenidaArea {
+            padding: 4px;
+            padding-left: 10px;
+            width: 100%;
+            height: 50%;
             border: solid 1px black;
             overflow: scroll;
             overflow-y: scroll;
@@ -80,6 +90,10 @@
             data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_ayuda">
             <span class="fa fa-question-circle-o"></span>
             </button>
+            <button class="btn btn-default tDyn pull-right" type="button" id="instrucciones"  
+            data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_instrucciones" 
+            onclick="window.open('./datos/Instrucciones.html', '_blank')"><span class="fa fa-info"></span>
+            </button>
             <button class="btn btn-default tDyn pull-right" type="button" id="parametros" data-bs-toggle="modal" 
             data-bs-target="#formularioParametros" data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_parametros"> 
             <span class="fa fa-cog"></span>
@@ -90,10 +104,6 @@
             <button class="btn btn-default tDyn pull-right" type="button" id="contacto" data-bs-toggle="modal" 
             data-bs-target="#formularioContacto" data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_contacto">
             <span class="fa fa-envelope-o"></span>
-            </button>
-            <button class="btn btn-default tDyn pull-right" type="button" id="instrucciones"  
-            data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_instrucciones" 
-            onclick="window.open('./datos/Instrucciones.html', '_blank')"><span class="fa fa-info"></span>
             </button>
         </div>
         <div class="col-md-1 pull-right">
@@ -364,7 +374,7 @@
                         <hr/>
                         <div class="form-group row justify-content-center">
                             <div class="col-md-3" id="panelesMinimo" data-i18n="resultados_LBL_panelesMinimo"></div>
-                            <input class="col-md-1 text-end " type="number" min="0" step="1" id="numeroPaneles">
+                            <input class="col-md-1 text-end " type="number" min="0" step="any" id="numeroPaneles">
 
                             <div class="col-md-3 offset-md-1" id="potenciaPanel" data-i18n="resultados_LBL_potenciaPanel"></div>
                             <input class="col-md-1 text-end " type="number" min="0" step="any" id="potenciaUnitaria">
@@ -536,11 +546,14 @@
                             <label for="subvencionEU" class="col-md-2 offset-sm-4 col-form-label" data-i18n="precios_LBL_subvencionEU"></label>
                             <div class="col-md-3">
                                 <select class="form-select" id="subvencionEU"> <!-- Tiene evento de cambio asociado en Dispatcher-->
-                                    <option value="0" data-i18n="precios_LBL_sinSubvencion"></option>
+<!--                                     <option value="0" data-i18n="precios_LBL_sinSubvencion"></option>
                                     <option value="600" data-i18n="precios_LBL_600Subvencion"></option>
                                     <option value="710" data-i18n="precios_LBL_710Subvencion"></option>
                                     <option value="450" data-i18n="precios_LBL_450Subvencion"></option>
-                                    <option value="535" data-i18n="precios_LBL_535Subvencion"></option>
+                                    <option value="535" data-i18n="precios_LBL_535Subvencion"></option> -->
+                                    <option value="Sin" data-i18n="precios_LBL_sinSubvencion"></option>
+                                    <option value="Individual" data-i18n="precios_LBL_subvencionIndividual"></option>
+                                    <option value="Comunitaria" data-i18n="precios_LBL_subvencionComunitaria"></option>
                                 </select>
                             </div>
                         </div>
@@ -615,7 +628,7 @@
     </div> <!-- Fin de los paneles operativos -->
 
     <!-- formulario modal de parametros -->
-    <div class="modal fade" id="formularioParametros" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="formularioParametros" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-info">
@@ -635,10 +648,6 @@
                         <div class="row mb-3">
                             <label for="IVA" class="col-md-5 col-form-label" data-i18n="parametros_LBL_IVA"></label>
                             <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="IVA"></div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="euroxkWpinstalado" class="col-md-5 col-form-label" data-i18n="parametros_LBL_EurosxkWpInstalado"></label>
-                            <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="euroxkWpinstalado"></div>
                         </div>
                         <div class="row mb-3">
                             <label for="perdidasSistema" class="col-md-5 col-form-label" data-i18n="parametros_LBL_perdidasSistema"></label>
@@ -684,7 +693,7 @@
     </div>
 
     <!-- formulario modal de contacto -->
-    <div class="modal fade" id="formularioContacto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="formularioContacto" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-info">
@@ -745,15 +754,28 @@
         </div>
     </div>
 
+    <!-- formulario modal de bienvenida -->
+    <div class="modal fade" id="formularioBienvenida" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="tituloBienvenida" data-i18n="main_TAB_bienvenida"></h5>
+                </div>
+                <div class="modal-body" style="background-color:rgb(169, 248, 206)">
+                    <div class="container-fluid">
+                        <div class="divBienvenidaArea" id="textoBienvenida"></div>
+                        <div class="col-md-10">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input align-middle" type="checkbox" id="noMostrarMas">
+                            <label class="form-check-label align-middle" for="noMostrarMas" data-i18n="main_TAB_noMostrarMas"></label>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-info col-md-2" id="cerrarBienvenida" data-i18n="main_TAB_cerrar"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
-
-<!-- Bootstrap  -->
- 
-<!-- <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"
-></script> -->
-
 </html>
