@@ -114,12 +114,11 @@ async function inicializaEventos() {
 
   // Evento del boton de instrucciones
   document.getElementById('instrucciones').addEventListener("click", async function handleChange(event) {
-    if (TCB.i18next.language === "eu") {
+    let tlng = TCB.i18next.language;
+    if (TCB.i18next.language === "eu") {  //Euskera aun no traducido
       alert("Lo sentimos, las instrucciones aun no estan traducidas al euskera. Las mostraremos en castellano");
       tlng = 'es';
-    } else {
-      tlng = TCB.i18next.language;
-    }
+    };
     window.open('./locales/instrucciones/Instrucciones_'+tlng+'.html', '_blank');
   });
 

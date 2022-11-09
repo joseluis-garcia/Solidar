@@ -26,7 +26,7 @@
 
 ## 20221109:
 - Se quita la limitación de un número entero de paneles
-- Se añaden las instruccicones detalladas de como obtener el CSV en el portal de VIESGO
+- Se añaden las instrucciones detalladas de como obtener el CSV en el portal de VIESGO
 - Nueva forma de calcular los precios de la instalación según tabla json
 - Modificación del cálculo de subvención EU
 - Se añade pantalla de bienvenida
