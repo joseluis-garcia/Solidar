@@ -72,7 +72,6 @@ export default async function _Dispatch(accion) {
       }
 
       if (optimizacion) {
-
         optimizacion = false;
         let autoconsumoInicial = TCB.balance.autoconsumo / TCB.produccion.totalAnual;
         let variacion = autoconsumoInicial / 0.5;  //fijamos un objetivo de 50% de autoconsumo

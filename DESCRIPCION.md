@@ -84,11 +84,11 @@ El objetivo es completar la matriz horaria de consumos para un periodo no inferi
 
 - La aplicación tiene en cuenta que los ficheros de las distribuidoras tienen la particularidad que el nombre de la columna correspondiente al consumo varía según:
 
-  - i-DE: Consumo Kwh
+  - i-DE: Consumo_Kwh
   - e-distribucion: AE\_kWh
   - UFD – Naturgy: Consumo
   - E-REDES: ¿?
-  - Viesgo: ¿?
+  - Viesgo: Consumo_Kwh
   
 - El número de registros mínimos que se esperan es de 8760, si no los hubiera se da un aviso dando al usuario la opción de continuar si lo desea.
 

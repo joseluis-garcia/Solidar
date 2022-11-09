@@ -94,7 +94,7 @@ function csvToArray(str, delimiter = ",") {
   debugLog("Cabecera CSV:", headers);
 
   // la diferencia entre los ficheros de Naturgy y de Iberdrola es que
-  // la cuarta columna donde esta el consumo se llama Consumo en Naturgy y Consumo_kWh en Iberdrola y AE_kWh en ENDESA.
+  // la cuarta columna donde esta el consumo se llama Consumo en Naturgy y Consumo_kWh en Iberdrola y VIESGO y AE_kWh en ENDESA.
   // unificamos en "Consumo"
   if (headers[3] == "Consumo_kWh") headers[3] = "Consumo";
   if (headers[3] == "AE_kWh") headers[3] = "Consumo";

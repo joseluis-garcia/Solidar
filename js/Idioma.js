@@ -10,7 +10,7 @@
     await TCB.i18next.init({
         debug: TCB.debug,
         fallbackLng: 'es',
-        locales: ['es', 'ca', 'ga', 'en', 'en-US', 'es-ES'],
+        locales: ['es', 'ca', 'ga', 'en', 'eu', 'en-US', 'es-ES'],
         backend: {loadPath: './locales/{{lng}}.json'}       
         }, (err, t) => {
         if (err) return console.error(err);
