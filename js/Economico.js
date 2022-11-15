@@ -15,19 +15,7 @@ export default class Economico {
         compensado: 0,
         ahorradoAutoconsumo: 0,
         diaSemana: 0,
-      }; //Esta array contiene lo pagado por consumo, lo cobrado por compensacion y el balance neto sin tener en cuenta posibles limites
-    }
-    this.cashFlow = Array(5);
-    for (let i = 0; i < 5; i++) {
-      this.cashFlow[i] = {
-        ano: 0,
-        previo: 0,
-        inversion: 0,
-        ahorro: 0,
-        IBI: 0,
-        subvencion: 0,
-        pendiente: 0,
-      };
+      }; //Este array contiene lo pagado por consumo, lo cobrado por compensacion y el balance neto sin tener en cuenta posibles limites
     }
 
     this.diaHoraPrecioOriginal = Array.from(Array(365), () => new Array(24).fill(0));
@@ -135,31 +123,50 @@ export default class Economico {
         valorSubvencionEU = TCB.subvencionEU[tipoSubvencionEU]['>10kWp'] * TCB.instalacion.potenciaTotal();
       }
     }
-    var cuotaPeriodo = new Array(5).fill(0);
-
+    var cuotaPeriodo = [];
+    this.cashFlow = [];
+    var cuota; 
     this.ahorroAnual = UTIL.suma(this.consumoOriginalMensual) - UTIL.suma(this.consumoConPlacasMensualCorregido);
-    this.cashFlow[1].subvencion = valorSubvencionEU; //La subvención se cobra con suerte despues de un año
-    for (let i = 0; i < 5; i++) {
-      this.cashFlow[i].ano = i + 1;
-      this.cashFlow[i].ahorro = this.ahorroAnual;
-      if (i == 0) {
-        this.cashFlow[i].previo = 0;
-        this.cashFlow[i].inversion = -TCB.instalacion.precioInstalacion();
-        this.cashFlow[i].IBI = 0; //Los beneficios de IBI suelen ser a partir del año 1
-      } else {
-        this.cashFlow[i].previo = this.cashFlow[i - 1].pendiente;
-        if (i <= tiempoSubvencionIBI) {
-          this.cashFlow[i].IBI = valorSubvencionIBI * porcientoSubvencionIBI;
-        }
-      }
-      cuotaPeriodo[i] =
-        this.cashFlow[i].inversion +
-        this.cashFlow[i].ahorro +
-        this.cashFlow[i].IBI +
-        this.cashFlow[i].subvencion;
-        this.cashFlow[i].pendiente = this.cashFlow[i].previo + cuotaPeriodo[i];
-    }
 
+    //RRR this.cashFlow[1].subvencion = valorSubvencionEU; 
+    var i = 1;
+    var unFlow = new Object;
+      unFlow = {"ano": i, 
+        "ahorro": this.ahorroAnual, 
+        "previo":0, 
+        "inversion": -TCB.instalacion.precioInstalacion(),
+        "subvencion": 0,
+        "IBI": 0,
+        "pendiente": -TCB.instalacion.precioInstalacion() + this.ahorroAnual
+    }
+    cuota = unFlow.inversion + unFlow.ahorro;
+    cuotaPeriodo.push(cuota);
+    this.cashFlow.push(unFlow);
+
+    while (unFlow.pendiente < 0) {
+      let lastPendiente = unFlow.pendiente;
+      unFlow = new Object;
+      unFlow.ano = ++i;
+      unFlow.ahorro = this.ahorroAnual;
+      unFlow.previo = lastPendiente;
+      unFlow.inversion = 0;
+      if (i == 2) {  //La subvención se cobra con suerte despues de un año
+        unFlow.subvencion = valorSubvencionEU;
+      } else {
+        unFlow.subvencion = 0;
+      }
+
+      if ((i-1) <= tiempoSubvencionIBI) {
+        unFlow.IBI = valorSubvencionIBI * porcientoSubvencionIBI;
+      } else {
+        unFlow.IBI = 0;
+      }
+
+      cuota = unFlow.ahorro + unFlow.IBI + unFlow.subvencion;
+      cuotaPeriodo.push(cuota);
+      unFlow.pendiente = unFlow.previo + cuota;
+      this.cashFlow.push(unFlow);
+    }
     this.VANProyecto = this.VAN(this.interesVAN, cuotaPeriodo);
     this.TIRProyecto = this.TIR(this.interesVAN * 2, cuotaPeriodo);
   }

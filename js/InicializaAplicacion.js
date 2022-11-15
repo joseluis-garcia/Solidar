@@ -46,7 +46,7 @@ async function inicializaEventos() {
     return new bootstrap.Tooltip(tooltipTriggerfun);  
   }) 
 
-  // Se pone la palabra localización en el campo de diraccion porque i18next no lo traduce.
+  // Se pone la palabra localización en el campo de direccion porque i18next no lo traduce.
   document.getElementById('direccion').value = i18next.t("proyecto_LBL_localizacion");
 
   // Se carga la pestaña inicial que es la de localización

@@ -112,8 +112,6 @@ export default class Graficos {
         gd.addEventListener('click', function(evt) {
 
             var posicion = this.getBoundingClientRect();
-            // console.log(posicion.top, posicion.right, posicion.bottom, posicion.left);
-
             var xaxis = this._fullLayout.xaxis;
             var yaxis = this._fullLayout.yaxis;
             var l = this._fullLayout.margin.l;
@@ -166,13 +164,16 @@ export default class Graficos {
 
     var g_produccion = {
         z: TCB.produccion.diaHora,
-        y: TCB.consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
+        y: TCB.produccion.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
         name: i18next.t('graficos_LBL_graficasProduccion'),
         type: 'surface',
         colorscale: 'YlOrRd',
         opacity:1,
-        showlegend:true,
+        showlegend: true,
         showscale: false,
+        contours: {"x": {show: true, usecolormap: true, project:{y: true}}, 
+                    "y": {show: true, usecolormap: true, project:{x: true}}
+        },
         hovertemplate:
             TCB.i18next.t('graficos_LBL_graficasHora') + ": %{y}<br>" +
             TCB.i18next.t('graficos_LBL_graficasHora') + ": %{x}<br>" +
@@ -411,7 +412,6 @@ export default class Graficos {
             type: 'scatter'
         };
 
- 
         var layout = {
             paper_bgcolor:'rgba(0,0,0,0)',
             plot_bgcolor:'rgba(0,0,0,0)',

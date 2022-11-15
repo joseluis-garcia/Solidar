@@ -36,4 +36,8 @@
 - Nuevos ficheros de instrucciones traducidos y cambio a locales/instrucciones
 - Nuevo ficheros de enlaces a distribuidoras para descarga CSV
 
+## 20221114
+- Cambio cálculo tabla financiera para que muestre las filas necesarias para un saldo pendiente positivo
+- Cambio lógica llamada PVGIS para que no sea sincrona. La verificación queda pendiente para el paso cálculo energia del dispatcher.
+
 

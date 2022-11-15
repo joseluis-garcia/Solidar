@@ -142,10 +142,12 @@ export default class Rendimiento {
         this.fechaFin = lastFecha;
         this.horaFin = hora;
         this.numeroRegistros = i;
+        TCB.rendimientoCreado = true;
         return true;
       } 
     } catch (err) {
       alert(i18next.t("rendimiento_MSG_errorFetch") + err.message);
+      TCB.rendimientoCreado = false;
       return false;
     }
   }

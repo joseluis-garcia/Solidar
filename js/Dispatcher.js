@@ -13,6 +13,8 @@ import {inicializaEventos} from "./InicializaAplicacion.js"
 // Funcion principal para la gestion del flujo de eventos
 
 var optimizacion;
+var waitLoop;
+var timeOutID;
 
 export default async function _Dispatch(accion) {
   UTIL.debugLog("Dispatcher envia: " + accion);
@@ -33,8 +35,7 @@ export default async function _Dispatch(accion) {
 
     case "Rendimiento":
       UTIL.debugLog("Dispatch => _initRendimiento");
-      status = await _initRendimiento();
-      if (!status) UTIL.debugLog("Error creando rendimiento");
+      status = _initRendimiento();
       return status;
 
     case "Calcular energia":
@@ -44,9 +45,12 @@ export default async function _Dispatch(accion) {
         alert(i18next.t("dispatcher_MSG_defineConsumosPrimero"));
         return false;
       }
-      if (!TCB.rendimientoCreado) {
-        alert("Falta rendimiento");
-        return false;
+
+      waitLoop = 0;
+      var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+      while (!TCB.rendimientoCreado && waitLoop++ < 20) {
+        console.log("esperando PVGIS loop: " + waitLoop);
+        await sleep (1000);
       }
 
       UTIL.debugLog("Dispatch -> _initInstalacion");
@@ -63,6 +67,7 @@ export default async function _Dispatch(accion) {
         UTIL.debugLog("Error creando producción");
         return status;
       }
+
     case "Balance":
       UTIL.debugLog("Dispatch -> _initBalance");
       status = _initBalance();
@@ -120,7 +125,6 @@ export default async function _Dispatch(accion) {
       return true;
   }
 }
-
 
 // Inicio funciones workflow
 // Función de construccion objeto Consumo ---------------------------------------------------------------------------------
@@ -180,7 +184,7 @@ async function _initInstalacion() {
 }
 
 // Función de construccion objeto Rendimiento -------------------------------------------------------------------------------
-async function _initRendimiento() {
+function _initRendimiento() {
 
   if (TCB.rendimientoCreado) {
     delete TCB.rendimiento; // Si hay rendimiento creado se borra
@@ -224,26 +228,15 @@ async function _initRendimiento() {
   UTIL.debugLog("_initRendimiento -> new rendimiento");
   TCB.rendimiento = new Rendimiento(point1[0], point1[1], inclinacion, azimut);
 
-  document.getElementById("accionMapa").innerHTML = i18next.t("rendimiento_MSG_obteniendoPVGISdata");
-  const timeOutID = setInterval(function () {
-      document.getElementById("accionMapa").innerHTML += ">";
-      }, 1000);
-
-  if ((await TCB.rendimiento.loadPVGISdata())) {
-    TCB.rendimientoCreado = true;
-  } else {
-    TCB.rendimientoCreado = false;
-  }
-  clearInterval(timeOutID);
-  document.getElementById("accionMapa").innerHTML = i18next.t("proyecto_LBL_accion_mapa1");
-  //document.getElementById("progresoPVGIS").innerHTML = "";
-  return TCB.rendimientoCreado;
+  //document.getElementById("accionMapa").innerHTML = i18next.t("rendimiento_MSG_obteniendoPVGISdata");
+  TCB.rendimiento.loadPVGISdata();
+  //document.getElementById("accionMapa").innerHTML = i18next.t("proyecto_LBL_accion_mapa1");
+  return true;
 }
 
 // Función de construccion objeto Producción -------------------------------------------------------------------------------
 async function _initProduccion() {
-  if (!TCB.consumoCreado) {
-    alert(i18next.t("dispatcher_MSG_defineConsumosPrimero"));
+  if (!TCB.rendimientoCreado) {
     return false;
   }
 
@@ -315,13 +308,15 @@ async function _initEconomico() {
 
 function muestraBalanceFinanciero() {
   var table = document.getElementById("financiero");
+
   var rowCount = table.rows.length;
   if (rowCount > 1) {
     for (let i = 1; i < rowCount; i++) {
       table.deleteRow(1);
     }
   }
-  for (let i = 0; i < 5; i++) {
+
+  for (let i = 0; i < TCB.economico.cashFlow.length; i++) {
     var row = table.insertRow(i + 1);
 
     var cell = row.insertCell(0);
@@ -346,8 +341,7 @@ function muestraBalanceFinanciero() {
     cell.innerHTML = UTIL.formatNumber(TCB.economico.cashFlow[i].subvencion, 2) + "€";
 
     var cell = row.insertCell(6);
-    if (TCB.economico.cashFlow[i].pendiente < 0)
-      cell.classList.add("text-danger");
+    if (TCB.economico.cashFlow[i].pendiente < 0) cell.classList.add("text-danger");
     cell.innerHTML = UTIL.formatNumber(TCB.economico.cashFlow[i].pendiente, 2) + "€";
   }
 
@@ -393,21 +387,20 @@ async function loopAlternativas() {
   //Buscamos punto en el que la produccion represente el 80% del consumo anual total
   let i = 0;
   while (consvsprod[i] > 80) i++;
-  let pendiente = (consvsprod[i] - consvsprod[i-1]) / (paneles[i] - paneles[i-1]);
-  let dif = 80 - consvsprod[i-1];
-  let limiteSubvencion = paneles[i-1] + dif / pendiente;
-
-  TCB.graficos.plotAlternativas(
-    "graf_5",
-    TCB.instalacion.potenciaUnitaria,
-    paneles,
-    TIR,
-    autoconsumo,
-    autosuficiencia,
-    precioInstalacion,
-    ahorroAnual,
-    limiteSubvencion
-  );
+    let pendiente = (consvsprod[i] - consvsprod[i-1]) / (paneles[i] - paneles[i-1]);
+    let dif = 80 - consvsprod[i-1];
+    let limiteSubvencion = paneles[i-1] + dif / pendiente;
+    TCB.graficos.plotAlternativas(
+      "graf_5",
+      TCB.instalacion.potenciaUnitaria,
+      paneles,
+      TIR,
+      autoconsumo,
+      autosuficiencia,
+      precioInstalacion,
+      ahorroAnual,
+      limiteSubvencion
+    );
 }
 // Asignación de la función _Dispatch al objeto global window.
 window.Dispatch = _Dispatch;
