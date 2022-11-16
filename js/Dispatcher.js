@@ -94,7 +94,7 @@ export default async function _Dispatch(accion) {
       }
       if (TCB.balanceCreado) UTIL.muestraBalanceEnergia();
 
-   // case "Economico":
+    case "Economico":
       UTIL.debugLog("Dispatch -> _initEconomico");
       status = await _initEconomico();
       if (!status) {
