@@ -105,7 +105,7 @@ export default function mapaLocalizacion() {
       TCB.nuevaLocalizacion = true;
       document.getElementById("azimut").value = ""; //Si habia un azimut definido lo limpiamos
 
-      // Si ya habiamos definido un punto previo removemos el layer donde esta dibujado el circulo de 500m de CCEE
+      // Si ya habiamos definido un punto previo removemos el layer donde esta dibujado el circulo de 1000m de CCEE
       map.getLayers().forEach((layer) => {
         if (layer instanceof ol.layer.Vector) map.removeLayer(layer);
       });

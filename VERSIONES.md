@@ -40,4 +40,10 @@
 - Cambio cálculo tabla financiera para que muestre las filas necesarias para un saldo pendiente positivo
 - Cambio lógica llamada PVGIS para que no sea sincrona. La verificación queda pendiente para el paso cálculo energia del dispatcher.
 
+## 20221116
+- Se separa el IVA en dos valores, uno para la energia y otro para la instalación
+- Se incluye texto de salvedad en el formulario de contactos
+- Cambiado logo a versión transparente
+- Cambiada logica en grafico de alternativas que provocaba cuelgue de aplicación si se hacia muchas veces. No llamar eventlistener cada vez que se genera un gráfico.
+
 

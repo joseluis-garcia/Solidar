@@ -1,7 +1,11 @@
 import * as UTIL from "./Utiles.js";
 import TCB from "./TCB.js";
 
-export default class Graficos {   
+export default class Graficos { 
+
+    constructor(lon, lat, inclinacion, azimut) {
+        this.init = true;  
+    }
 
     consumos_y_generacion(donde){
     var resConsumo = UTIL.resumenMensual(TCB.consumo.idxTable, 'suma');
@@ -495,21 +499,27 @@ export default class Graficos {
         var r = gd._fullLayout.margin.r;
         var w = gd._fullLayout.margin.width;
     
-        gd.addEventListener('click', function(evt) {
-            document.getElementById("numeroPaneles").value =  Math.round(xInDataCoord);
-            Dispatch("Cambio instalacion");
-        });
-        
-        gd.addEventListener('mousemove', function(evt) {
-            xInDataCoord = xaxis.p2c(evt.x - l);
-            yInDataCoord = yaxis.p2c(evt.y - t);
-            // Se limita el número de paneles que se puede seleccionar del gráfico desde 1 al máximo mostrado
-            if (Math.round(xInDataCoord) > 0 && Math.round(xInDataCoord) <= paneles[paneles.length - 1]) {
-                Plotly.relayout(gd, 'title', 
-                    [i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatNumber(potencia_kWp, 3)}), 
-                    i18next.t('graficos_LBL_cambiaPaneles', {paneles: Math.round(xInDataCoord)})].join("<br>"));
-            }
-        });
+        if (this.init) {
+            this.init = false;
+            gd.addEventListener('click', function(evt) {
+                if (TCB.instalacion.paneles != Math.round(xInDataCoord)) {
+                    document.getElementById("numeroPaneles").value =  Math.round(xInDataCoord);
+                    TCB.instalacion.paneles = Math.round(xInDataCoord);
+                    Dispatch("Cambio instalacion");
+                }
+            });
+            
+            gd.addEventListener('mousemove', function(evt) {
+                xInDataCoord = xaxis.p2c(evt.x - l);
+                yInDataCoord = yaxis.p2c(evt.y - t);
+                // Se limita el número de paneles que se puede seleccionar del gráfico desde 1 al máximo mostrado
+                if (Math.round(xInDataCoord) > 0 && Math.round(xInDataCoord) <= paneles[paneles.length - 1]) {
+                    Plotly.relayout(gd, 'title', 
+                        [i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatNumber(potencia_kWp, 3)}), 
+                        i18next.t('graficos_LBL_cambiaPaneles', {paneles: Math.round(xInDataCoord)})].join("<br>"));
+                }
+            });
+        }
     };
 
 }

@@ -55,7 +55,8 @@ const TCB = {
     parametros : {
         conversionCO2 : 0.440,
         impuestoElectrico : 5.113,
-        IVA : 21.0,
+        IVAenergia : 5.0,
+        IVAinstalacion : 21.0,
         perdidasSistema : 14,
         interesVAN : 3,
         tecnologia : 'crystSi',

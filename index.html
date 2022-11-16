@@ -81,7 +81,7 @@
 
 <body style="background-color:rgb(220, 249, 233)">
     <div class="row flex-fill align-items-center"> <!-- Menu de cabecera -->
-        <img src="./datos/logo.jpg" class="float-left" style="width:220px;height:90px;" alt="SOM Energia Madrid">
+        <img src="./datos/logo.png" class="float-left" style="width:220px;height:90px;" alt="SOM Energia Madrid">
         <div class="col-md-7 text-center" id="menu_screen">
             <h2 data-i18n="main_LBL_titulo"></h2>
         </div>
@@ -641,8 +641,12 @@
                             <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="impuestoElectrico"></div>
                         </div>
                         <div class="row mb-3">
-                            <label for="IVA" class="col-md-5 col-form-label" data-i18n="parametros_LBL_IVA"></label>
-                            <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="IVA"></div>
+                            <label for="IVAenergia" class="col-md-5 col-form-label" data-i18n="parametros_LBL_IVAenergia"></label>
+                            <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="IVAenergia"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="IVAinstalacion" class="col-md-5 col-form-label" data-i18n="parametros_LBL_IVAinstalacion"></label>
+                            <div class="col-md-3"><input type="number" min="0" step="any" class="form-control " id="IVAinstalacion"></div>
                         </div>
                         <div class="row mb-3">
                             <label for="perdidasSistema" class="col-md-5 col-form-label" data-i18n="parametros_LBL_perdidasSistema"></label>
@@ -729,8 +733,13 @@
                         </fieldset>
 
                         <div class="row mb-3">
-                        <div class="col-md-6 offset-md-2">
+                        <div class="col-md-10 offset-md-2">
+                            <p data-i18n="contacto_LBL_advertencia">
                             <div class="form-check">
+
+<!--                                 <p>Los datos que nos aportes en este formulario serán utilizados única y exclusivamente
+                                para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para
+                                ningún otor fin</p> -->
                             <input class="form-check-input" type="checkbox" name="mantenerContacto">
                             <label class="form-check-label" for="mantenerContacto" data-i18n="contacto_LBL_respuesta">
                             </label>

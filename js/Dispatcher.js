@@ -14,10 +14,9 @@ import {inicializaEventos} from "./InicializaAplicacion.js"
 
 var optimizacion;
 var waitLoop;
-var timeOutID;
 
 export default async function _Dispatch(accion) {
-  UTIL.debugLog("Dispatcher envia: " + accion);
+  UTIL.debugLog("Dispatcher recibe: " + accion);
   var status = true;
 
   switch (accion) {
@@ -54,7 +53,7 @@ export default async function _Dispatch(accion) {
       }
 
       UTIL.debugLog("Dispatch -> _initInstalacion");
-      status = await _initInstalacion();
+      status = await _initInstalacion(); //await
       if (!status) {
         UTIL.debugLog("Error creando instalación");
         return status;
@@ -62,7 +61,7 @@ export default async function _Dispatch(accion) {
 
     case "Produccion":
       UTIL.debugLog("Dispatch -> _initProduccion");
-      status = await _initProduccion();
+      status = await _initProduccion(); //await
       if (!status) {
         UTIL.debugLog("Error creando producción");
         return status;
@@ -89,11 +88,13 @@ export default async function _Dispatch(accion) {
           TCB.instalacion.paneles = panelesOptimos;
           document.getElementById("numeroPaneles").value = panelesOptimos;
         }
-        _Dispatch("Produccion");
+        //_Dispatch("Produccion");
+        status = await _initProduccion();
+        status = _initBalance();
       }
       if (TCB.balanceCreado) UTIL.muestraBalanceEnergia();
 
-    case "Economico":
+   // case "Economico":
       UTIL.debugLog("Dispatch -> _initEconomico");
       status = await _initEconomico();
       if (!status) {
@@ -102,14 +103,14 @@ export default async function _Dispatch(accion) {
       }
       if (TCB.economicoCreado) {
         UTIL.muestraBalanceEconomico();
-        muestraBalanceFinanciero();
+        await muestraBalanceFinanciero();
       }
       return true;
 
     case "Cambio subvencion":
       UTIL.debugLog("Dispatch -> _cambioSubvencion");
       TCB.economico.calculoFinanciero();
-      muestraBalanceFinanciero();
+      await muestraBalanceFinanciero();
       return true;
 
     case "Cambio instalacion":
@@ -120,7 +121,7 @@ export default async function _Dispatch(accion) {
       await _initEconomico();
       if (TCB.economicoCreado) {
         UTIL.muestraBalanceEconomico();
-        muestraBalanceFinanciero();
+        await muestraBalanceFinanciero();
       }
       return true;
   }
@@ -262,7 +263,7 @@ function _initBalance() {
   return true;
 }
 
-function _cambioInstalacion(paneles, potenciaUnitaria) {
+async function _cambioInstalacion(paneles, potenciaUnitaria) {
 
   if (paneles === undefined) {
     TCB.instalacion.paneles = document.getElementById("numeroPaneles").value;
@@ -306,7 +307,8 @@ async function _initEconomico() {
   return true;
 }
 
-function muestraBalanceFinanciero() {
+async function muestraBalanceFinanciero() {
+
   var table = document.getElementById("financiero");
 
   var rowCount = table.rows.length;
@@ -347,7 +349,7 @@ function muestraBalanceFinanciero() {
 
   UTIL.muestra("VAN", "", UTIL.formatNumber(TCB.economico.VANProyecto, 2), "€");
   UTIL.muestra("TIR", "", UTIL.formatNumber(TCB.economico.TIRProyecto, 2), "%");
-  loopAlternativas();
+  await loopAlternativas();
 }
 
 // Esta funcion hace un recorrido completo de todos los calculos con unos consumos y localizacion fija.
@@ -355,6 +357,7 @@ function muestraBalanceFinanciero() {
 // Completa los arrays necesarios para el cálculo financiero.
 
 async function loopAlternativas() {
+
   var numeroPanelesOriginal = TCB.instalacion.paneles;
   var intentos = [0.25, 0.5, 1, 1.5, 2];
   var paneles = [];
@@ -364,7 +367,6 @@ async function loopAlternativas() {
   var precioInstalacion = [];
   var consvsprod = [];
   var ahorroAnual = [];
-
   intentos.forEach((intento) => {
     let _pan = Math.trunc(numeroPanelesOriginal * intento);
     if (_pan >= 1) {

@@ -23,7 +23,7 @@ export default class Economico {
     this.diaHoraTarifaOriginal = Array.from(Array(365), () => new Array(24).fill(0));
     this.diaHoraTarifaConPaneles = Array.from(Array(365), () => new Array(24).fill(0));
 
-    this.impuestoTotal = (TCB.parametros.IVA + TCB.parametros.impuestoElectrico) / 100;
+    this.impuestoTotal = (TCB.parametros.IVAenergia + TCB.parametros.impuestoElectrico) / 100;
 
     this.consumoOriginalMensual = new Array(12);  
     this.consumoConPlacasMensual = new Array(12);

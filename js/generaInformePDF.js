@@ -96,8 +96,10 @@ async function generaInformePDF() {
     let consumoConPlacasAnual = suma(TCB.economico.consumoConPlacasMensualCorregido);
     nuevaLinea('Dato', i++,i18next.t('precios_LBL_gastoAnualSinPlacas'), formatNumber(consumoOriginalAnual, 2), "€");
     nuevaLinea('Dato', i++,i18next.t('precios_LBL_gastoAnualConPlacas'), formatNumber(consumoConPlacasAnual, 2), "€");
+    nuevaLinea('Dato', i++,i18next.t('parametros_LBL_IVAenergia'), formatNumber(TCB.parametros.IVAenergia), "%");
     nuevaLinea('Dato', i++,i18next.t('precios_LBL_ahorroAnual'), formatNumber(TCB.economico.ahorroAnual, 2), "€");
     nuevaLinea('Dato', i++,i18next.t('precios_LBL_costeInstalacion'), formatNumber(TCB.instalacion.precioInstalacion(), 2), "€");
+    nuevaLinea('Dato', i++,i18next.t('parametros_LBL_IVAinstalacion'), formatNumber(TCB.parametros.IVAinstalacion), "%");
     nuevaLinea('Dato', i++,i18next.t('precios_LBL_noCompensadoAnual'), formatNumber(suma(TCB.economico.perdidaMes), 2), "€");
     nuevaLinea('Dato', i++,i18next.t('precios_LBL_ahorroAnualPorciento'), formatNumber((consumoOriginalAnual - consumoConPlacasAnual) / consumoOriginalAnual * 100, 2), "%");
     await Plotly.toImage('graf_4', { format: 'png', width: 800, height: 500 }).then(function (dataURL) {
@@ -132,14 +134,9 @@ async function generaInformePDF() {
         doc.addImage({imageData: dataURL, x: 40, y: 100, w:150, h:100})});
 
     // Texto de descargo de responsabilidad
-    let disclaimer = "Todas las estimaciones dadas se han realizado con la mayor precisión posible,"+
-    "con la mejor intención y sin ningún compromiso.";
-    let lines = doc.splitTextToSize(disclaimer, 170);
+    let lines = doc.splitTextToSize(i18next.t("informe_LBL_disclaimer1"), 170);
     doc.text(25,210,lines);
-    disclaimer = "Som Energia no tiene ningún interés económico ni directo ni indirecto en este "+
-    "estudio salvo contribuir a una transición energética justa con los usuarios, eficiente," +
-    "descentralizada y limpia.";
-    lines = doc.splitTextToSize(disclaimer, 170);
+    lines = doc.splitTextToSize(i18next.t("informe_LBL_disclaimer2"), 170);
     doc.text(25,225,lines);
 
     nuevaLinea('Pie', pagina++, false);
