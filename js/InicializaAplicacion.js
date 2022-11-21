@@ -139,12 +139,15 @@ async function inicializaEventos() {
   }
   
   // Inicialización y evento asociado a la generación del informe pdf
-  document.getElementById('informe').addEventListener("click", function handleChange(event) { 
+  document.getElementById('informeMenu').addEventListener("click", procesaInformePDF);
+  document.getElementById('informeResumen').addEventListener("click", procesaInformePDF);
+  
+  function procesaInformePDF(event) { 
     if (TCB.economicoCreado) {
-      generaInformePDF();
+      generaInformePDF(true);
     } else {
-        alert("debe procesar primero");
-    }});
+      alert(TCB.i18next.t('informe_MSG_procesarPrimero'));
+    }};
 
   // Boton muestra/oculta ayuda
   document.getElementById("ayuda").addEventListener("click", function handleChange(event) { 
@@ -185,7 +188,7 @@ async function inicializaEventos() {
 
     async function eventoWizard( hacia) {
       // ¿que panel esta activo y en que direccion nos queremos mover?
-      let steps = ['localizacion', 'consumo', 'resultados', 'precios', 'graficos'];
+      let steps = ['localizacion', 'consumo', 'resultados', 'precios', 'graficos', 'reporte'];
       var current = document.getElementsByClassName("tab-pane active")[0];
       let step = steps.findIndex((e) => { return (e+'-tab' === current.id) });
       if (hacia === 'Siguiente') {
@@ -227,6 +230,11 @@ async function inicializaEventos() {
           status = await Dispatch('Calcular energia');
           return status;
         }
+
+      case "graficos":
+        generaInformePDF(false);
+        return true;
+
       default:
         return true;
       }

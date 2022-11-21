@@ -120,17 +120,20 @@ export default function mapaLocalizacion() {
       if (respTerritorio.status === 200) {
         let datoTerritorio = await respTerritorio.text();
         let jsonTerritorio = JSON.parse(datoTerritorio);
-        UTIL.debugLog("El punto este en:",jsonTerritorio);
+        UTIL.debugLog("El punto este en:", jsonTerritorio);
         if ( jsonTerritorio.address.country !== 'España') {
           alert (TCB.i18next.t("proyecto_MSG_territorio"));
           return false
         }
         // Verificamos si estamos en territorio insular. Por ahora solo damos un aviso porque no estan cargadas las configuraciones de las tarifas
+        TCB.localizacion = "Peninsula";
         let detalle = jsonTerritorio.display_name.split(",");
-        const islas = ['Islas Baleares', 'Canarias', 'Melilla']; //Lamentablemente Ceuta no es identificada por Nominatim
+        const islas = ['Islas Baleares', 'Canarias', 'Melilla', 'Ceuta'];
         if (islas.includes(detalle[0])) {
           alert (TCB.i18next.t('proyecto_MSG_insular'));
+          TCB.localizacion = detalle[0];
         }
+        UTIL.debugLog("Localización:" + TCB.localizacion);
       }
 
       // Nos quedamos con el punto

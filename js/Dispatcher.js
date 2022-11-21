@@ -47,10 +47,12 @@ export default async function _Dispatch(accion) {
 
       waitLoop = 0;
       var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+      document.getElementById('csv_resumen').innerHTML = "PVGIS >"
       while (!TCB.rendimientoCreado && waitLoop++ < 20) {
-        console.log("esperando PVGIS loop: " + waitLoop);
+        document.getElementById('csv_resumen').innerHTML += "<"
         await sleep (1000);
       }
+      document.getElementById('csv_resumen').innerHTML = ""
 
       UTIL.debugLog("Dispatch -> _initInstalacion");
       status = await _initInstalacion(); //await

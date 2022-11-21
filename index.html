@@ -14,7 +14,8 @@
 
     <!-- OpenLayers -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.1.0/ol.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css" type="text/css"> -->
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
+    
     <style>
         .divTextArea {
             padding: 4px;
@@ -45,11 +46,7 @@
         .btn-info {
             background-color: #80DEEA;
         }
-
     </style>
-
-
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
 
     <!-- I18n -->
     <script src="https://cdn.jsdelivr.net/npm/i18next@21.6.10/i18next.min.js"></script>
@@ -60,10 +57,7 @@
     <!-- Plotly-->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-    <!-- jspdf 
-    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.es.min.js"></script>
-    -->
-
+    <!-- jspdf -->
     <script src="./js/jspdf.debug.js"></script>
     <script src='https://html2canvas.hertzen.com/dist/html2canvas.min.js'></script>
     <script src="https://unpkg.com/jspdf-autotable@3.5.22/dist/jspdf.plugin.autotable.js"></script>
@@ -98,7 +92,7 @@
             data-bs-target="#formularioParametros" data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_parametros"> 
             <span class="fa fa-cog"></span>
             </button>
-            <button class="btn btn-default tDyn pull-right" type="button" id="informe"  
+            <button class="btn btn-default tDyn pull-right" type="button" id="informeMenu"  
             data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_guardarPDF"><span class="fa fa-file-pdf-o"></span></button>
             </button>
             <button class="btn btn-default tDyn pull-right" type="button" id="contacto" data-bs-toggle="modal" 
@@ -135,6 +129,7 @@
                             <a class="nav-link" id="nav-resultados-tab" href="#resultados-tab" data-i18n="main_TAB_resultados"></a>
                             <a class="nav-link" id="nav-precios-tab"  href="#precios-tab" data-i18n="main_TAB_precios"></a>
                             <a class="nav-link" id="nav-graficos-tab"  href="#graficos-tab" data-i18n="main_TAB_graficos"></a>
+                            <a class="nav-link" id="nav-reporte-tab"  href="#reporte-tab" data-i18n="main_TAB_reporte"></a>
                             <button class="btn btn-info btn-sm tDyn col-md-1 pull-right" type="button" id="btnSiguiente"
                             data-bs-toggle="tooltip" data-bs-placement="top" name="main_TT_siguiente">
                             <span class="fa fa-arrow-right"></span></button>
@@ -461,7 +456,7 @@
                             <div class="col-md-2  tDyn" data-i18n="resultados_LBL_energíaDemandadaVersusGenerada"
                                 data-bs-toggle="tooltip" data-bs-placement="top" name="resultados_TT_energíaDemandadaVersusGenerada">
                             </div>
-                            <div class="col-md-2 text-end text-end" id="porcientoEnergiaAhorradaGenerada">
+                            <div class="col-md-2 text-end" id="porcientoEnergiaAhorradaGenerada">
                                 <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
                             <div class="col-md-2 offset-md-1 tDyn" data-i18n="resultados_LBL_energiaAhorrada"
@@ -472,10 +467,24 @@
                             </div>
                         </div>
                         <hr/>
-                        
+                        <div class="col-md-12 text-center justify-content-center">
+                            <a id="fuente"
+                                href="https://energia.gob.es/desarrollo/EficienciaEnergetica/RITE/Reconocidos/Reconocidos/Otros%20documentos/Factores_emision_CO2.pdf"
+                                target="_blank"></a>
+                        </div>
                         <div class="form-group row justify-content-center">
-                            <div class="col-md-3 tDyn" data-i18n="resultados_LBL_kgCO2AnualAhorrado"></div>
-                            <div class="col-md-3  text-end" id="CO2Anual"><a data-i18n="resultados_LBL_pendienteCalculo"></a></div>
+                            <div class="col-md-2 tDyn" data-i18n="resultados_LBL_kgCO2AnualAhorradoRenovable"
+                                data-bs-toggle="tooltip" data-bs-placement="top" name="resultados_LBL_kgCO2AnualAhorrado">
+                            </div>
+                            <div class="col-md-2 text-end" id="CO2AnualRenovable">
+                                <a data-i18n="resultados_LBL_pendienteCalculo"></a>
+                            </div>
+                            <div class="col-md-2 offset-md-1 tDyn" data-i18n="resultados_LBL_kgCO2AnualAhorradoNoRenovable"
+                            data-bs-toggle="tooltip" data-bs-placement="top" name="resultados_LBL_kgCO2AnualAhorrado">
+                            </div>
+                            <div class="col-md-2 text-end" id="CO2AnualNoRenovable">
+                                <a data-i18n="resultados_LBL_pendienteCalculo"></a>
+                            </div>
                         </div>
                         <hr/>
 
@@ -606,6 +615,13 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Contenido del tab reservado para los gráficos -->
+                    <div class="tab-pane fade" id="reporte-tab" role="tabpanel"></a>
+                        <button type="button" class="btn btn-info col-md-2" id="informeResumen" data-i18n="informe_LBL_formatoPDF"></button>
+                        <div id="contenido"></div>
+                    </div>
+
                 </div>
             </div>
         </div>

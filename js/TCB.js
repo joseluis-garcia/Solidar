@@ -49,7 +49,9 @@ const TCB = {
     },
     tarifaActiva : '2.0TD',
     proyectoActivo: "",
+    localizacion: "",
     fuenteConsumos : {},
+    pdf : "",
     
     // Parametros por defecto
     parametros : {
@@ -74,6 +76,28 @@ const TCB = {
     subvencionEU : {
         'Individual': {'<=10kWp':600, '>10kWp': 450},
         'Comunitaria' : {'<=10kWp':710, '>10kWp':535}
+    },
+    conversionCO2 : {
+        'Peninsula' : {
+            'renovable' : 0.331,
+            'norenovable' : 0.472
+        },
+        'Islas Baleares' : {
+            'renovable' : 0.932,
+            'norenovable' : 0.966
+        },
+        'Canarias' : {
+            'renovable' : 0.776,
+            'norenovable' : 0.825
+         },
+        'Ceuta': {
+            'renovable' : 0.721,
+            'norenovable' : 0.735
+        },
+        'Melilla': {
+            'renovable' : 0.721,
+            'norenovable' : 0.735
+        }
     }
 }
 export default TCB

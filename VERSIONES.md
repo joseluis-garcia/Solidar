@@ -14,15 +14,15 @@
 
 ## 20221017:
 - Las instrucciones aparecen en una pestaña nueva y no en la isma ventana
-- Modificación precios SOM Energia en tarifas.json
+- Modificación precios SOM en tarifas.json
 - Se crea la version indexNoEntero donde se puede poner un numero no entero de paneles para el cálculo. Aun no se modifica el gráfico de alternativas que sigue siendo un número entero
 - Se incluyen los ficheros detallados de carga de CSV para I-DE y Naturgy
 
 ## 20221024:
 - Se modficia la carga de CSV para prever que puedan venir registros vacios al final del fichero (detectado en Naturgy Santa Ana)
-- Modificación unidades potencia disponible a kWp en balance energia y reporte.
+- Modificación unidades potencia disponible a kWp en balance energía y reporte.
 - Se añade un número al nombre de la pestaña para dejar mas claro que el proceso es una secuencia
-- Se modifican los nombres de los campos en el balance de energia para darle mas coherencia y se añaden los tooltips
+- Se modifican los nombres de los campos en el balance de energía para darle mas coherencia y se añaden los tooltips
 
 ## 20221109:
 - Se quita la limitación de un número entero de paneles
@@ -38,12 +38,15 @@
 
 ## 20221114
 - Cambio cálculo tabla financiera para que muestre las filas necesarias para un saldo pendiente positivo
-- Cambio lógica llamada PVGIS para que no sea sincrona. La verificación queda pendiente para el paso cálculo energia del dispatcher.
+- Cambio lógica llamada PVGIS para que no sea síncrona. La verificación queda pendiente para el paso cálculo energía del dispatcher.
 
 ## 20221116
-- Se separa el IVA en dos valores, uno para la energia y otro para la instalación
+- Se separa el IVA en dos valores, uno para la energía y otro para la instalación
 - Se incluye texto de salvedad en el formulario de contactos
 - Cambiado logo a versión transparente
 - Cambiada logica en grafico de alternativas que provocaba cuelgue de aplicación si se hacia muchas veces. No llamar eventlistener cada vez que se genera un gráfico.
 
-
+## 20221121
+- Se incluye el cálculo de CO2 equivalente basado en la región en el balance de energía y se incluye en el report
+- Se reporta el problema de OSM con Ceuta. Resuelto
+- Nueva pestaña resumen como final del workflow con opción de generar pdf
