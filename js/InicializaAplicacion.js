@@ -368,6 +368,15 @@ async function inicializaEventos() {
     }
   
     // ---> Eventos de la pestaña balance economico
+    // Evento para gestionar la modificacion del precio de instalación
+    document.getElementById("correccionCoste").addEventListener("change", (e) => _modificaPrecioInstalacion( e));
+    function _modificaPrecioInstalacion(evento) {
+      TCB.correccionPrecioInstalacion = parseFloat(evento.target.value);
+      UTIL.muestra("costeCorregido", "", UTIL.formatNumber(TCB.instalacion.precioInstalacionCorregido(), 2), "€");
+      Dispatch("Cambio precio instalacion");
+    }
+
+
     // Evento para cargar la subvención EU DOMid: "subvencionEU"
     // La subvención EU solo se puede aplicar cuando el autoconsumo es superior al 80%
     const subvencion = document.getElementById("subvencionEU");

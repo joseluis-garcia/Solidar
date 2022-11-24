@@ -21,4 +21,9 @@ export default class Instalacion {
     let precioFinal = this.potenciaTotal() * TCB.precioInstalacion.precios[i-1].precio * (1 + TCB.parametros.IVAinstalacion / 100);
     return precioFinal;
   }
+
+  precioInstalacionCorregido () {
+    let incremento = (100. + TCB.correccionPrecioInstalacion) / 100.;
+    return this.precioInstalacion() * incremento;
+  }
 }

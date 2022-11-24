@@ -110,6 +110,7 @@ export default async function _Dispatch(accion) {
       return true;
 
     case "Cambio subvencion":
+    case "Cambio precio instalacion":
       UTIL.debugLog("Dispatch -> _cambioSubvencion");
       TCB.economico.calculoFinanciero();
       await muestraBalanceFinanciero();
@@ -379,7 +380,7 @@ async function loopAlternativas() {
       autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100);
       consvsprod.push((TCB.consumo.totalAnual/TCB.produccion.totalAnual) * 100);
       TIR.push(TCB.economico.TIRProyecto);
-      precioInstalacion.push(TCB.instalacion.precioInstalacion());
+      precioInstalacion.push(TCB.instalacion.precioInstalacionCorregido());
       ahorroAnual.push(TCB.economico.ahorroAnual);
     }
   });

@@ -73,6 +73,8 @@ const TCB = {
         {"desde":20, "hasta":25, "precio":1000},
         {"desde":25, "hasta":100, "precio": 950}
     ],
+    correccionPrecioInstalacion : 0,
+    
     subvencionEU : {
         'Individual': {'<=10kWp':600, '>10kWp': 450},
         'Comunitaria' : {'<=10kWp':710, '>10kWp':535}

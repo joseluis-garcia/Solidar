@@ -320,6 +320,7 @@ function muestraBalanceEconomico() {
   muestra("gastoAnualConPlacas", "", formatNumber(consumoConPlacasAnual, 2), "€");
   muestra("ahorroAnual", "", formatNumber(TCB.economico.ahorroAnual, 2), "€");
   muestra("costeInstalacion","",formatNumber(TCB.instalacion.precioInstalacion(), 2), "€");
+  muestra("costeCorregido", "", formatNumber(TCB.instalacion.precioInstalacionCorregido(), 2), "€");
   muestra("noCompensado", "", formatNumber(suma(TCB.economico.perdidaMes), 2), "€");
   muestra("ahorroAnualPorCiento", "",formatNumber((consumoOriginalAnual - consumoConPlacasAnual) / consumoOriginalAnual * 100, 2), "%");
   TCB.graficos.balanceEconomico("graf_4");

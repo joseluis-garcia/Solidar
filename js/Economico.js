@@ -128,16 +128,15 @@ export default class Economico {
     var cuota; 
     this.ahorroAnual = UTIL.suma(this.consumoOriginalMensual) - UTIL.suma(this.consumoConPlacasMensualCorregido);
 
-    //RRR this.cashFlow[1].subvencion = valorSubvencionEU; 
     var i = 1;
     var unFlow = new Object;
       unFlow = {"ano": i, 
         "ahorro": this.ahorroAnual, 
         "previo":0, 
-        "inversion": -TCB.instalacion.precioInstalacion(),
+        "inversion": -TCB.instalacion.precioInstalacionCorregido(),
         "subvencion": 0,
         "IBI": 0,
-        "pendiente": -TCB.instalacion.precioInstalacion() + this.ahorroAnual
+        "pendiente": -TCB.instalacion.precioInstalacionCorregido() + this.ahorroAnual
     }
     cuota = unFlow.inversion + unFlow.ahorro;
     cuotaPeriodo.push(cuota);

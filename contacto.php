@@ -22,7 +22,7 @@ $headers = 'From: '.$email_from."\r\n".
 if (mail($email_to, $email_subject, $email_message, $headers)) {
     echo '<script language="javascript">
         alert("¡El formulario se ha enviado con éxito!");
-        window.location.href="index.html";
+
         </script>'; 
 } else {
     echo '<script language="javascript">

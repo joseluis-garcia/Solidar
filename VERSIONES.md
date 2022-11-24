@@ -50,3 +50,6 @@
 - Se incluye el cálculo de CO2 equivalente basado en la región en el balance de energía y se incluye en el report
 - Se reporta el problema de OSM con Ceuta. Resuelto
 - Nueva pestaña resumen como final del workflow con opción de generar pdf
+
+## 20221124
+- Se incorpora un campo que permite aumentar o diminuir en un porcentaje fijo el precio de la instalación.

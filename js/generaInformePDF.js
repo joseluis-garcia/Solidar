@@ -115,7 +115,7 @@ async function generaInformePDF(pdf) {
     nuevaLinea('Dato', i++, 'precios_LBL_gastoAnualConPlacas', formatNumber(consumoConPlacasAnual, 2), "€");
     nuevaLinea('Dato', i++, 'parametros_LBL_IVAenergia', formatNumber(TCB.parametros.IVAenergia), "%");
     nuevaLinea('Dato', i++, 'precios_LBL_ahorroAnual', formatNumber(TCB.economico.ahorroAnual, 2), "€");
-    nuevaLinea('Dato', i++, 'precios_LBL_costeInstalacion', formatNumber(TCB.instalacion.precioInstalacion(), 2), "€");
+    nuevaLinea('Dato', i++, 'precios_LBL_costeInstalacion', formatNumber(TCB.instalacion.precioInstalacionCorregido(), 2), "€");
     nuevaLinea('Dato', i++, 'parametros_LBL_IVAinstalacion', formatNumber(TCB.parametros.IVAinstalacion), "%");
     nuevaLinea('Dato', i++, 'precios_LBL_noCompensadoAnual', formatNumber(suma(TCB.economico.perdidaMes), 2), "€");
     nuevaLinea('Dato', i++, 'precios_LBL_ahorroAnualPorciento', formatNumber((consumoOriginalAnual - consumoConPlacasAnual) / consumoOriginalAnual * 100, 2), "%");

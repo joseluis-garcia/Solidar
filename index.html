@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
     
     <style>
+
         .divTextArea {
             padding: 4px;
             padding-left: 10px;
@@ -533,6 +534,12 @@
                             <div class="col-md-3 offset-md-1" data-i18n="precios_LBL_costeInstalacion"></div>
                             <div class="col-md-1 text-end" id="costeInstalacion"><a data-i18n="precios_LBL_pendienteCalculo"></a></div>
                         </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-md-2 offset-md-5" data-i18n="precios_LBL_coreccionCoste"></div>
+                            <input type="number" class="col-md-1 tDyn" id="correccionCoste" value="0" 
+                            data-bs-toggle="tooltip" data-bs-placement="top" name="precios_TT_coreccionCoste">
+                            <div class="col-md-1 text-end" id="costeCorregido"><a data-i18n="precios_LBL_pendienteCalculo"></a></div>
+                        </div>
 
                         <hr/>
 
@@ -717,7 +724,7 @@
                 </div>
                 <div class="modal-body" style="background-color:rgb(169, 248, 206)">
                     <div class="container-fluid">
-                    <form method="POST" name='formularioContacto' action="./contacto.php" enctype="multipart/form-data">
+                    <form method="POST" name='formularioContacto' action="./contacto.php" target="_blank" enctype="multipart/form-data">
                         <div class="row mb-3">
                             <label for="nombre" class="col-md-2 col-form-label" data-i18n="contacto_LBL_nombre"></label>
                             <div class="col-md-9"><input type="text" class="form-control" name="nombre"></div>
@@ -752,10 +759,6 @@
                         <div class="col-md-10 offset-md-2">
                             <p data-i18n="contacto_LBL_advertencia">
                             <div class="form-check">
-
-<!--                                 <p>Los datos que nos aportes en este formulario serán utilizados única y exclusivamente
-                                para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para
-                                ningún otor fin</p> -->
                             <input class="form-check-input" type="checkbox" name="mantenerContacto">
                             <label class="form-check-label" for="mantenerContacto" data-i18n="contacto_LBL_respuesta">
                             </label>
