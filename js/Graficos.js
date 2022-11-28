@@ -156,7 +156,7 @@ export default class Graficos {
             var layout = {
                 paper_bgcolor:'rgba(0,0,0,0)',
                 plot_bgcolor:'rgba(0,0,0,0)',
-                title: "Dia:" + fecha[0] + " - " + TCB.i18next.t(UTIL.nombreMes[parseInt(fecha[1])]),
+                title: TCB.i18next.t("graficos_LBL_graficasDia") + fecha[0] + " - " + TCB.i18next.t(UTIL.nombreMes[parseInt(fecha[1])]),
                 xaxis: {title: TCB.i18next.t('graficos_LBL_graficasHora'), dtick: 2},
                 yaxis: {title: 'kWh', showline: true, zeroline: true, zerolinecolor :'#969696', zeroline : true, gridcolor : '#bdbdbd', gridwidth : 2 }
             };

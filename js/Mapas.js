@@ -5,24 +5,17 @@ var map;
 var p_exist = false;
 var OSM;
 var SAT;
-
-function resetMap() {
-  p_exist = false;
-}
+var Vlayer;
+var point1, point2;
+var p1, p2;
 
 export default function mapaLocalizacion() {
 
-  var point1, point2;
-
-  var lonlattxt;
   var azimut;
-  var p1, p2;
-  var Vmarker1, Vmarker2;
+  var Vmarker2;
   var kmlFeature;
-  var Vlayer;
-  var attribution = new ol.control.Attribution({
-    collapsible: false,
-  });
+
+  var attribution = new ol.control.Attribution({collapsible: false});
 
   OSM = new ol.layer.Tile({
     source: new ol.source.OSM({
@@ -55,7 +48,7 @@ export default function mapaLocalizacion() {
   map.addLayer(OSM);
   map.addControl(new ol.control.ZoomSlider());
 
-  {//--> operativa para cambiar la vista entre Mapa y Satelite
+  //--> operativa para cambiar la vista entre Mapa y Satelite
   let swapBtn = document.getElementById("swapMapa");
   swapBtn.addEventListener("click", function handleChange(event) { 
     if (swapBtn.innerText === 'Mapa') {
@@ -67,16 +60,16 @@ export default function mapaLocalizacion() {
     let SAT = map.getLayers().getArray().find(layer => layer.get('name') == 'SAT');
     OSM.setVisible(!OSM.getVisible());
     SAT.setVisible(!SAT.getVisible());
-  })
-  };
+  });
 
   map.on("dblclick", async function (evt) {
     if (p_exist) { //Estamos procesando el segundo punto sobre el mapa para definir azimut
+      console.log(p_exist);
       document.getElementById("accionMapa").innerHTML = i18next.t("proyecto_LBL_accion_mapa1");
       p2 = evt.coordinate;
       point2 = ol.proj.transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
 
-      //Calculamos el azimut basandonos en los dos punto
+      //Calculamos el azimut basandonos en los dos puntos
       azimut = (Math.atan2(point1[0] - point2[0], point1[1] - point2[1]) * 180) / Math.PI;
       document.getElementById("azimut").value = UTIL.formatNumber(azimut, 0);
 
@@ -101,68 +94,90 @@ export default function mapaLocalizacion() {
       p_exist = false;
 
     } else {
-
-      TCB.nuevaLocalizacion = true;
-      document.getElementById("azimut").value = ""; //Si habia un azimut definido lo limpiamos
-
-      // Si ya habiamos definido un punto previo removemos el layer donde esta dibujado el circulo de 1000m de CCEE
-      map.getLayers().forEach((layer) => {
-        if (layer instanceof ol.layer.Vector) map.removeLayer(layer);
-      });
-      p1 = evt.coordinate;
       point1 = ol.proj.transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
 
       // Vamos a verificar si el punto dado esta en España
-      let url = "https://nominatim.openstreetmap.org/reverse?lat="+point1[1].toFixed(4)+"&lon="+point1[0].toFixed(4)+
-                    "&format=json&zoom=5&accept-language='es'";
-      UTIL.debugLog("Call reverse Nominatim :" + url);
-      const respTerritorio = await fetch(url);
-      if (respTerritorio.status === 200) {
-        let datoTerritorio = await respTerritorio.text();
-        let jsonTerritorio = JSON.parse(datoTerritorio);
-        UTIL.debugLog("El punto este en:", jsonTerritorio);
-        if ( jsonTerritorio.address.country !== 'España') {
-          alert (TCB.i18next.t("proyecto_MSG_territorio"));
-          return false
-        }
-        // Verificamos si estamos en territorio insular. Por ahora solo damos un aviso porque no estan cargadas las configuraciones de las tarifas
-        TCB.localizacion = "Peninsula";
-        let detalle = jsonTerritorio.display_name.split(",");
-        const islas = ['Islas Baleares', 'Canarias', 'Melilla', 'Ceuta'];
-        if (islas.includes(detalle[0])) {
-          alert (TCB.i18next.t('proyecto_MSG_insular'));
-          TCB.localizacion = detalle[0];
-        }
-        UTIL.debugLog("Localización:" + TCB.localizacion);
+      if (!await verificaTerritorio(point1)) {
+        document.getElementById("lonlat").value = "";
+        return false;
       }
-
-      // Nos quedamos con el punto
-      lonlattxt = point1[0].toFixed(4) + "," + point1[1].toFixed(4);
-      document.getElementById("lonlat").value = lonlattxt;
-      document.getElementById("accionMapa").innerHTML = i18next.t("proyecto_LBL_accion_mapa2");
-      p_exist = true;
-
-      // Dibuja el primer marker
-      Vmarker1 = new ol.Feature({ geometry: new ol.geom.Point(p1) });
-      var Smarker1 = new ol.style.Style({
-        image: new ol.style.Icon({
-          scale: 1,
-          anchor: [0.5, 1],
-          src: "./datos/marker.png",
-        }),
-      });
-      Vmarker1.setStyle(Smarker1);
-
-      // Dibuje el circulo de 500m para CCEE
-      let areaCCEE = new ol.Feature({ geometry: new ol.geom.Circle(p1, 500) }); 
-      Vlayer = new ol.layer.Vector({ source: new ol.source.Vector() });
-
-      // Añade el circulo y el marker
-      Vlayer.getSource().addFeatures([Vmarker1, areaCCEE]);
-      //map.getView().setCenter(evt.coordinate);
-      map.addLayer(Vlayer);
+      primerPunto( point1);
     }
   });
+}
+
+function primerPunto(point) {
+
+  TCB.nuevaLocalizacion = true;
+  document.getElementById("azimut").value = ""; //Si habia un azimut definido lo limpiamos
+  point1 = point;
+  p1 = ol.proj.transform(point1, "EPSG:4326", "EPSG:3857");
+
+  // Si ya habiamos definido un punto previo removemos el layer donde esta dibujado el circulo de 1000m de CCEE
+  map.getLayers().forEach((layer) => {
+    if (layer instanceof ol.layer.Vector) map.removeLayer(layer);
+  });
+
+  // Nos quedamos con el punto
+  let lonlattxt = point1[0].toFixed(4) + "," + point1[1].toFixed(4);
+  document.getElementById("lonlat").value = lonlattxt;
+  document.getElementById("accionMapa").innerHTML = i18next.t("proyecto_LBL_accion_mapa2");
+
+
+  // Dibuja el primer marker
+  let Vmarker1 = new ol.Feature({ geometry: new ol.geom.Point(p1) });
+  var Smarker1 = new ol.style.Style({
+    image: new ol.style.Icon({
+      scale: 1,
+      anchor: [0.5, 1],
+      src: "./datos/marker.png",
+    }),
+  });
+  Vmarker1.setStyle(Smarker1);
+
+  // Dibuje el circulo de 1000m para CCEE
+  let areaCCEE = new ol.Feature({ geometry: new ol.geom.Circle(p1, 1000) }); 
+  Vlayer = new ol.layer.Vector({ source: new ol.source.Vector() });
+
+  // Añade el circulo y el marker
+  Vlayer.getSource().addFeatures([Vmarker1, areaCCEE]);
+  map.addLayer(Vlayer);
+  map.setView(
+    new ol.View({
+    center: ol.proj.fromLonLat(point1),
+    zoom: 14
+  }));
+
+  p_exist = true;
+
+}
+async function verificaTerritorio (point) {
+  // Vamos a verificar si el punto dado esta en España
+  let status = false;
+  let url = "https://nominatim.openstreetmap.org/reverse?lat="+point[1].toFixed(4)+"&lon="+point[0].toFixed(4)+
+                "&format=json&zoom=5&accept-language='es'";
+  UTIL.debugLog("Call reverse Nominatim :" + url);
+  const respTerritorio = await fetch(url);
+  if (respTerritorio.status === 200) {
+    let datoTerritorio = await respTerritorio.text();
+    let jsonTerritorio = JSON.parse(datoTerritorio);
+    UTIL.debugLog("El punto esta en:", jsonTerritorio);
+    if ( jsonTerritorio.address.country !== 'España') {
+      alert (TCB.i18next.t("proyecto_MSG_territorio"));
+      return status;
+    }
+    // Verificamos si estamos en territorio insular. Por ahora solo damos un aviso porque no estan cargadas las configuraciones de las tarifas
+    TCB.localizacion = "Peninsula";
+    let detalle = jsonTerritorio.display_name.split(",");
+    const islas = ['Islas Baleares', 'Canarias', 'Melilla', 'Ceuta'];
+    if (islas.includes(detalle[0])) {
+      alert (TCB.i18next.t('proyecto_MSG_insular'));
+      TCB.localizacion = detalle[0];
+    }
+    UTIL.debugLog("Localización:" + TCB.localizacion);
+    status = true;
+  }
+  return status;
 }
 
 async function mapaPorDireccion() {
@@ -212,4 +227,8 @@ async function centraMapa(direccion) {
   map.getView().setZoom(17);
 }
 
-export { mapaLocalizacion, mapaPorDireccion, centraMapa, resetMap };
+function resetMap() {
+  p_exist = false;
+}
+
+export { mapaLocalizacion, mapaPorDireccion, centraMapa, resetMap, verificaTerritorio, primerPunto };

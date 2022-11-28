@@ -150,7 +150,8 @@
                         <div class="row justify-content-center mb-3">
                             <label for="proyecto" class="col-md-1 col-form-label" data-i18n="proyecto_LBL_nombre_proyecto"></label>
                             <div class="col-md-11">
-                                <input type="text" class="form-control" id="proyecto"> <!-- Tiene evento de cambio asociado en Dispatcher-->
+                                <input type="text" class="form-control tDyn" id="proyecto"
+                                data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_nombre_proyecto"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                             </div>
                         </div>
 
@@ -160,7 +161,8 @@
                             <!-- Entrada lon-lat-->
                             <label for="lonlat" class="col-md-1 col-form-label pull-left" data-i18n="proyecto_LBL_lonlat"></label>
                             <div class="col-md-2">
-                                <input type="text" class="form-control" id="lonlat" required>
+                                <input type="text" class="form-control tDyn" id="lonlat" required
+                                data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_lonlat"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                             </div>
 
                             <!-- Entrada inclinacion de los paneles -->
@@ -170,8 +172,8 @@
                             </label>
 
                             <div class="col-md-2">
-                                <input type="number" class="form-control tDyn" id="inclinacion" min="0" step="any"
-                                data-bs-toggle="tooltip" data-placement="top" name="main_MSG_mayorQueCero"> <!-- Tiene evento de cambio asociado en Dispatcher-->
+                                <input type="number" class="form-control tDyn" id="inclinacion" min="0" max=90 step="any"
+                                data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_inclinacion"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                             </div>
 
                             <!-- Uso de la opcion inclinacion optima-->
@@ -188,7 +190,8 @@
                                 title="<img src='./datos/Angulos PVGIS.jpg' />">
                             </label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control" id="azimut">
+                                <input type="number" class="form-control tDyn" id="azimut"
+                                data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_azimut"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                             </div>
 
                             <!-- Uso de la opcion azimut optimo -->
@@ -202,9 +205,11 @@
 
                         <!-- campos para localizacion de zona o direccion -->
                         <div class="input-group mt-3">
-                            <input type="text" class="form-control col-md-4 text-info" id="direccion" onfocus="this.value=''"> <!-- Tiene evento de cambio asociado en Dispatcher-->
+                            <input type="text" class="form-control col-md-4 text-info tDyn" id="direccion" onfocus="this.value=''"
+                            data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_localizar"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                             <div class="input-group-prepend col-md-8">
-                            <select class="form-select" id="candidatos" disabled></select>  <!-- Tiene evento de cambio asociado en Dispatcher-->
+                            <select class="form-select tDyn" id="candidatos" disabled
+                            data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_candidatos"></select>  <!-- Tiene evento de cambio asociado en Dispatcher-->
                             </div>
                         </div>
             
@@ -224,9 +229,10 @@
                             <div class="col-md-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1" data-i18n="precios_LBL_tarifa"></span>
+                                        <span class="input-group-text " id="basic-addon1" data-i18n="precios_LBL_tarifa"></span>
                                     </div>
-                                    <select class="form-select col-md-2" id="tarifa"> -->
+                                    <select class="form-select col-md-2 tDyn" id="tarifa"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_tarifa"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                                         <option value="2.0TD">2.0TD</option>
                                         <option value="3.0TD">3.0TD</option>
                                     </select>
@@ -236,7 +242,8 @@
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input class="form-control" type="file" accept=".json" class="custom-file-input" id="tarifaFile">
+                                        <input class="form-control tDyn" type="file" accept=".json" class="custom-file-input" id="tarifaFile"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_ficheroTarifas">
                                     </div>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">
@@ -253,33 +260,41 @@
                             <div class="col col-md-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">P1</span>
+                                        <span class="input-group-text tDyn" id="basic-addon1"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_descripcionTarifaP1">P1</span>
                                     </div>
-                                    <input type="number" id="tarifaP1" min="0" step="any" class="form-control text-end ">
+                                    <input type="number" id="tarifaP1" min="0" step="any" class="form-control text-end tDyn"
+                                    data-bs-toggle="tooltip" data-placement="top" name="precios_TT_valorTarifa">
                                 </div>
                             </div>
                             <div class="col col-md-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">P2</span>
+                                        <span class="input-group-text tDyn" id="basic-addon1" 
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_descripcionTarifaP2">P2</span>
                                     </div>
-                                    <input type="number"  id="tarifaP2" min="0" step="any" class="form-control text-end ">
+                                    <input type="number"  id="tarifaP2" min="0" step="any" class="form-control text-end tDyn"
+                                    data-bs-toggle="tooltip" data-placement="top" name="precios_TT_valorTarifa">
                                 </div>
                             </div>
                             <div class="col col-md-2">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">P3</span>
+                                        <span class="input-group-text tDyn" id="basic-addon1"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_descripcionTarifaP3">P3</span>
                                     </div>
-                                    <input type="number"  id="tarifaP3" min="0" step="any" class="form-control text-end ">
+                                    <input type="number"  id="tarifaP3" min="0" step="any" class="form-control text-end tDyn"
+                                    data-bs-toggle="tooltip" data-placement="top" name="precios_TT_valorTarifa">
                                 </div>
                             </div>
                             <div class="col col-md-3">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1" data-i18n="precios_LBL_compensa"></span>
+                                        <span class="input-group-text tDyn" id="basic-addon1" data-i18n="precios_LBL_compensa"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_compensa"></span>
                                     </div>
-                                    <input type="number"  id="tarifaP0" min="0" step="any" class="form-control  text-end ">
+                                    <input type="number"  id="tarifaP0" min="0" step="any" class="form-control text-end tDyn"
+                                    data-bs-toggle="tooltip" data-placement="top" name="precios_TT_valorCompensa">
                                 </div>
                             </div>
                         </div>
@@ -289,30 +304,35 @@
                                 <div class="col col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">P4</span>
+                                        <span class="input-group-text tDyn" id="basic-addon1"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_descripcionTarifaP4">P4</span>
                                         </div>
-                                        <input type="number" id="tarifaP4" min="0" step="any" class="form-control text-end ">
+                                        <input type="number" id="tarifaP4" min="0" step="any" class="form-control text-end tDyn"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_valorTarifa">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">P5</span>
+                                        <span class="input-group-text tDyn" id="basic-addon1"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_descripcionTarifaP5">P5</span>
                                         </div>
-                                        <input type="number" id="tarifaP5" min="0" step="any" class="form-control text-end ">
+                                        <input type="number" id="tarifaP5" min="0" step="any" class="form-control text-end tDyn"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_valorTarifa">
                                     </div>
                                 </div>
                                 <div class="col col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">P6</span>
+                                        <span class="input-group-text tDyn" id="basic-addon1"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_descripcionTarifaP6">P6</span>
                                         </div>
-                                        <input type="number" id="tarifaP6" min="0" step="any" class="form-control text-end ">
+                                        <input type="number" id="tarifaP6" min="0" step="any" class="form-control text-end tDyn"
+                                        data-bs-toggle="tooltip" data-placement="top" name="precios_TT_valorTarifa">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                
                         <hr/>
                 <!-- Seleccion del archivo con los consumos horarios CSV o potencia anual para el caso de perfil tipo REE -->
                         <div class="row align-items-center">
@@ -326,7 +346,8 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <input class="form-control" type="file" accept=".csv" id="csvfile"> <!-- Tiene evento de cambio asociado en Dispatcher-->
+                                <input class="form-control tDyn" type="file" accept=".csv" id="csvfile"
+                                data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_ficheroCSV"> <!-- Tiene evento de cambio asociado en Dispatcher-->
                             </div>
                         </div>
 
@@ -334,17 +355,19 @@
                             <div class="col-md-3 mb-3">
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label float-right" for="desdePotencia"></label> 
-                                        <a href="https://www.ree.es/sites/default/files/01_ACTIVIDADES/Documentos/Documentacion-Simel/BOE-A-2021-21395.pdf" 
+                                        <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2021-21395" 
                                         target="_blank" data-i18n="proyecto_LBL_metodoREE"></a>
                                     </label>
-                                    <input class="form-check-input float-right col-md-8" type="radio" name="origen" id="desdePotencia"> <!-- Tiene evento de cambio asociado en Dispatcher-->    
+                                    <input class="form-check-input float-right col-md-8" type="radio" name="origen" id="desdePotencia">  <!-- Tiene evento de cambio asociado en Dispatcher-->    
                                 </div>
                             </div>
 
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <span class="input-group-text" id="basic-addon3" data-i18n="proyecto_LBL_potenciaBase"></span>
-                                    <input type="number" class="form-control " id="potenciaAno" min="0" step="any" disabled>
+                                    <span class="input-group-text tDyn" id="basic-addon3" data-i18n="proyecto_LBL_potenciaBase"
+                                    data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_perfilREE"></span>
+                                    <input type="number" class="form-control tDyn" id="potenciaAno" min="0" step="any" disabled
+                                    data-bs-toggle="tooltip" data-placement="top" name="proyecto_TT_potenciaBase">
                                     <span class="input-group-text" id="cargarREE" data-i18n="proyecto_LBL_cargar"></span>  <!-- Tiene evento de cambio asociado en Dispatcher-->          
                                 </div>
                             </div>

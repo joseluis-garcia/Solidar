@@ -52,4 +52,10 @@
 - Nueva pestaña resumen como final del workflow con opción de generar pdf
 
 ## 20221124
-- Se incorpora un campo que permite aumentar o diminuir en un porcentaje fijo el precio de la instalación.
+- Se incorpora un campo que permite aumentar o disminuir en un porcentaje fijo el precio de la instalación.
+- Nueva versión fichero detallado de como obtener CSV de I-DE
+- Modificación instrucciones (todos los idiomas) se retira la frase que hablaba del precio de instalación €/kWp, parámetro que ya no existe
+
+## 20221128
+- Modificada lógica para poder indicar la localizacion por latlon directamente en el campo
+- Incorporados tooltips de pestañas 1-Localización y 2-Consumo

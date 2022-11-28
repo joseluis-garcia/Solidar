@@ -246,6 +246,19 @@ async function inicializaEventos() {
       TCB.proyectoActivo = event.target.value;
     });
 
+    // Evento para registrar la entrada de lon-lat a mano
+    const lonlatCampo = document.getElementById("lonlat");
+    lonlatCampo.addEventListener("change", async function handleChange(event) {
+      let point = lonlatCampo.value.split(',').map(x => parseFloat(x));
+      if (!await MAPA.verificaTerritorio(point)) {
+        document.getElementById("lonlat").value = "";
+        return false;
+      } else {
+        TCB.nuevaLocalizacion = true;
+        MAPA.primerPunto( point);
+      }
+    });
+
     // Evento para gestionar las opciones de fichero CSV o perfil REE. DOMid: "desdeFichero" y DOMid: "desdePotencia"
     document.getElementById("desdeFichero").addEventListener("change", cambioFuente);
     document.getElementById("desdePotencia").addEventListener("change", cambioFuente);
